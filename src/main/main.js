@@ -76,6 +76,7 @@ app.whenReady().then(() => {
   nativeTheme.themeSource = "dark";
   config.ensure();
   config.serve();
+  if (fs.existsSync(path.join(os.homedir(), ".claude"))) { try { installSkill(); } catch { /* not writable */ } }
   terminals.configure(() => config.read().settings);
   config.watch((changed) => win?.webContents.send("config:changed", changed));
   // npm run dev: saving the app's own page code reloads the window (terminals keep running).
@@ -169,7 +170,8 @@ handle("config:reload", () => { win?.webContents.reloadIgnoringCache(); return t
 // The "mooser" skill for Claude Code: teaches any Claude Code session how to change Mooser.
 const SKILL_DIR = path.join(os.homedir(), ".claude", "skills", "mooser");
 handle("config:skillInstalled", () => fs.existsSync(path.join(SKILL_DIR, "SKILL.md")));
-handle("config:installSkill", () => {
+handle("config:installSkill", () => installSkill());
+function installSkill() {
   fs.mkdirSync(SKILL_DIR, { recursive: true });
   const guide = fs.readFileSync(path.join(__dirname, "..", "..", "docs", "CUSTOMIZE.md"), "utf8").replace(/^#.*\r?\n/, "");
   fs.writeFileSync(path.join(SKILL_DIR, "SKILL.md"), `---
@@ -180,7 +182,7 @@ description: "Customize the Mooser app (terminals and AI agents workspace): its 
 # Mooser
 ${guide}`);
   return { ok: true };
-});
+}
 // Plugins run a program and get its output (plugins are your own trusted code).
 handle("plugin:exec", (cmd, args = [], opts = {}) => new Promise((resolve) => {
   require("node:child_process").execFile(cmd, args, { cwd: opts.cwd || os.homedir(), timeout: Math.min(opts.timeout ?? 30000, 600000), windowsHide: true, shell: process.platform === "win32" && !/\.exe$/i.test(cmd) },

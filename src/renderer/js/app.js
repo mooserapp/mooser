@@ -52,14 +52,7 @@ const ctx = {
   openFolder: (f) => openFolder(f),
   openPalette: () => openPalette(),
   runInNewTab: (command, spec) => runInNewTab(command, spec),
-  customizeWithClaude: () => customizeWithClaude(),
-  installSkill: () => api.config.installSkill?.(),
-  skillInstalled: () => skillInstalled,
 };
-let skillInstalled = false;
-const refreshSkill = async () => { skillInstalled = Boolean(await api.config.skillInstalled?.()); };
-refreshSkill();
-ctx.installSkill = async () => { await api.config.installSkill(); await refreshSkill(); toast("Skill instalado", "Claude Code ya sabe personalizar Mooser desde cualquier terminal."); };
 
 function showPanel(id, open = true) { ui.panelTab = id; if (open) setPanelOpen(true); saveUi(); renderPanel(); }
 function renderPanel() {
@@ -150,8 +143,7 @@ function renderSidebar() {
         : [h(`span.dot.${a.status}`), h("div.grow.col", h("span.trunc", a.agent), h("span.sub.trunc", `${WS.label(a.space)} · `, h("span", { style: { color: STATUS_COLOR[a.status] } }, STATUS_WORD[a.status])))]))
       : rail ? [] : [h("div.dim", { style: { padding: "4px 10px", fontSize: "12px" } }, "Abre Claude Code, Codex o Gemini en una pestaña y aparecerá aquí con su estado.")]));
   sb.append(h("div.foot",
-    h("div.foot-row", { title: "Configuración (Ctrl+,)", onclick: () => openSettings(ctx) }, icon("cpu", 14), rail ? null : "Configuración"),
-    h("div.foot-row", { title: "Personalizar Mooser con Claude", onclick: customizeWithClaude }, icon("sparkles", 14), rail ? null : "Personalizar con Claude")));
+    h("div.foot-row", { title: "Configuración (Ctrl+,)", onclick: () => openSettings(ctx) }, icon("cpu", 14), rail ? null : "Configuración")));
 }
 
 function spaceMenu(s, at) {
@@ -179,12 +171,6 @@ function sendLine(t, text, tries = 0) {
   const p = WS.panesOf(t)[0], rt = p && W.panes.get(p.id);
   if (rt?.termId) setTimeout(() => api.term.write(rt.termId, `${text}\r`), 400);
   else if (tries < 40) setTimeout(() => sendLine(t, text, tries + 1), 150);
-}
-// Opens your Mooser folder as a space with Claude Code in it, ready for "make it ...".
-function customizeWithClaude() {
-  const s = openFolder(Settings.S.dir);
-  if (s && !s.name) WS.renameSpace(s.id, "Personalizar Mooser");
-  runInNewTab("claude", { cwd: Settings.S.dir, name: "Claude: personalizar" });
 }
 
 // ---------- tab bar ----------
@@ -228,8 +214,8 @@ function renderStatus() {
   if (usageCache?.five) bar.append(h("span.meter", { title: "Ver uso de Claude", onclick: () => showPanel("usage") }, `Claude 5 h ${Math.round(usageCache.five.utilization ?? 0)}%`, usageCache.week ? ` · semana ${Math.round(usageCache.week.utilization ?? 0)}%` : ""));
   for (const it of registry.status) { try { const el = it.render(); if (el) bar.append(el); } catch (e) { console.error(`[plugin ${it.plugin}]`, e); } }
   bar.append(h("span.grow"));
-  if (registry.errors.length) bar.append(h("span.meter", { style: { color: "var(--blocked)" }, title: registry.errors.map((e) => `${e.plugin}: ${e.error}`).join("\n"), onclick: () => openSettings(ctx, "custom") }, `${registry.errors.length} plugin con error`));
-  if (Settings.S.error) bar.append(h("span.meter", { style: { color: "var(--blocked)" }, title: Settings.S.error, onclick: () => openSettings(ctx, "custom") }, "settings.json con error"));
+  if (registry.errors.length) bar.append(h("span.meter", { style: { color: "var(--blocked)" }, title: registry.errors.map((e) => `${e.plugin}: ${e.error}`).join("\n"), onclick: () => api.shell.editor(`${Settings.S.dir}/plugins/${registry.errors[0].plugin}/main.js`) }, `${registry.errors.length} plugin con error`));
+  if (Settings.S.error) bar.append(h("span.meter", { style: { color: "var(--blocked)" }, title: Settings.S.error, onclick: () => api.shell.editor(`${Settings.S.dir}/settings.json`) }, "settings.json con error"));
   bar.append(h("span.dim", W.mac ? "⌘⇧P comandos" : "Ctrl+Shift+P comandos"));
 }
 
@@ -274,9 +260,7 @@ const commands = () => [
   { label: ui.rail ? "Expandir barra lateral" : "Plegar barra lateral", icon: "sidebar", key: W.mac ? "⌘B" : "Ctrl+Shift+B", run: () => setRail(!ui.rail) },
   ...PANELS().map((p) => ({ label: `Abrir ${p.label}`, icon: p.icon, run: () => showPanel(p.id) })),
   { label: "Configuración", icon: "cpu", key: W.mac ? "⌘," : "Ctrl+,", run: () => openSettings(ctx) },
-  { label: "Personalizar Mooser con Claude", icon: "sparkles", run: customizeWithClaude },
   { label: "Cambiar tema…", icon: "sparkles", run: () => openSettings(ctx, "look") },
-  { label: "Abrir la carpeta de Mooser (~/.mooser)", icon: "folder", run: () => api.config.open() },
   { label: "Recargar ventana", icon: "refresh", run: () => api.config.reload() },
   { label: "Texto más grande", icon: "plus", key: W.mac ? "⌘+" : "Ctrl+=", run: () => zoom(1) },
   { label: "Texto más pequeño", icon: "minus", key: W.mac ? "⌘-" : "Ctrl+-", run: () => zoom(-1) },

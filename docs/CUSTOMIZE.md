@@ -17,7 +17,7 @@ how Mooser looks or works, do it by editing these files.
 | `backgrounds/` | images for the window background | at once |
 
 Check your work: a broken `settings.json` or a plugin that throws shows in red at the right of the
-status bar, and in Settings, Customize. Fix it there.
+status bar; clicking it opens the file. Fix it there.
 
 ## settings.json
 

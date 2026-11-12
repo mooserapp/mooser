@@ -2,7 +2,6 @@
 import { h, icon, clear, button, toggle } from "./ui.js";
 import * as Settings from "./settings.js";
 import { PRESETS } from "./settings.js";
-import { registry } from "./plugins.js";
 
 const api = window.mooser;
 const SECTIONS = [
@@ -10,7 +9,6 @@ const SECTIONS = [
   { id: "terminal", label: "Terminal", icon: "terminal" },
   { id: "alerts", label: "Avisos", icon: "zap" },
   { id: "agents", label: "Agentes", icon: "bot" },
-  { id: "custom", label: "Personalizar", icon: "code" },
   { id: "about", label: "Acerca de", icon: "app" },
 ];
 
@@ -108,28 +106,6 @@ function render(ctx, id, repaint) {
         text(x.command, "Comando", (v) => update(i, "command", v), { width: "260px", className: "mono" }),
         h("button.icon-btn", { title: "Quitar", onclick: () => Settings.set({ agents: list.filter((_, j) => j !== i) }) }, icon("trash", 14)))),
       h("div", button("Añadir agente", () => Settings.set({ agents: [...list, { label: "Nuevo agente", command: "" }] }), { ic: "plus" })),
-    ];
-  }
-  if (id === "custom") {
-    const on = s.plugins ?? {};
-    return [
-      h("h3", "Personaliza Mooser con Claude"),
-      h("p.set-hint", "Todo lo que hace tuyo a Mooser vive en tu carpeta como archivos: ajustes, estilos y plugins. Pídele a Claude lo que quieras (\"pon el acento verde\", \"añade un panel con mis PRs\", \"un botón que lance los tests\") y lo verás aplicado al guardar."),
-      h("div.row", { style: { gap: "8px", flexWrap: "wrap" } },
-        button("Personalizar con Claude", () => { document.querySelector(".settings-overlay")?.remove(); ctx.customizeWithClaude(); }, { kind: "primary", ic: "sparkles" }),
-        button("Abrir la carpeta", () => api.config.open(), { ic: "folder" }),
-        button("Editar custom.css", () => api.shell.editor(`${Settings.S.dir}/custom.css`), { ic: "code" }),
-        button("Recargar ventana", () => api.config.reload(), { ic: "refresh" })),
-      row("Claude Code en cualquier terminal", ctx.skillInstalled() ? "Instalado: cualquier sesión de Claude Code sabe cómo personalizar Mooser." : "Instala el skill \"mooser\" para que Claude Code sepa personalizar Mooser desde cualquier carpeta.",
-        ctx.skillInstalled() ? h("span.chip", { style: { background: "#7ed9b522", color: "#7ed9b5" } }, icon("check", 12), "Instalado") : button("Instalar skill", async () => { await ctx.installSkill(); repaint(); }, { ic: "plus" })),
-      h("h3", "Plugins"),
-      ...(Settings.S.plugins.length ? Settings.S.plugins.map((p) => {
-        const err = registry.errors.find((e) => e.plugin === p.name);
-        return row(p.name, err ? `Error: ${err.error}` : p.about || "Sin descripción", h("div.row", { style: { gap: "6px" } },
-          h("button.icon-btn", { title: "Editar", onclick: () => api.shell.editor(`${Settings.S.dir}/plugins/${p.name}/main.js`) }, icon("code", 14)),
-          toggle(Boolean(on[p.name]), () => Settings.set({ plugins: { [p.name]: !on[p.name] } }).then(() => api.config.reload()))));
-      }) : [h("span.set-hint", "Aún no hay plugins. Pídele uno a Claude.")]),
-      Settings.S.error ? h("div.notice.error", Settings.S.error) : null,
     ];
   }
   return [

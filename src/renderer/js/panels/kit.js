@@ -60,7 +60,7 @@ export class KitPanel {
 
   paint() {
     const el = clear(this.el), d = this.data;
-    const on = (xs) => xs?.filter((x) => x.enabled).length;
+    const on = (xs) => xs?.filter((x) => x.enabled && !(x.source === "personal" && x.name === "mooser")).length;
     const summary = d ? [`${on(d.skills)} skills`, `${on(d.agents)} agentes`, `${on(d.plugins)} plugins`, this.mcp ? `${this.mcp.length} MCP` : null].filter(Boolean).join(", ") : this.loading ? "Leyendo tu configuración…" : "";
     el.append(h("div.row", { style: { padding: "0 4px" } },
       h("div.col.grow", h("b", { style: { fontSize: "15px" } }, "Claude Code"), h("span.dim.trunc", { style: { fontSize: "11.5px" } }, summary)),
@@ -97,7 +97,7 @@ export class KitPanel {
     }
     const list = h("div.scroll"); el.append(list);
     this.paintList = () => {
-      const all = (kind === "skill" ? this.data.skills : this.data.agents) ?? [], q = this.q;
+      const all = ((kind === "skill" ? this.data.skills : this.data.agents) ?? []).filter((i) => !(kind === "skill" && i.source === "personal" && i.name === "mooser")), q = this.q;
       const shown = q ? all.filter((i) => `${i.name} ${i.description} ${i.plugin ?? ""}`.toLowerCase().includes(q)) : all;
       const groups = new Map();
       for (const it of shown) { const g = it.source === "plugin" ? `plugin:${it.plugin}` : it.source; if (!groups.has(g)) groups.set(g, []); groups.get(g).push(it); }
@@ -113,8 +113,7 @@ export class KitPanel {
     const key = `${kind}:${it.file}`, on = this.sel === key, mine = it.source === "personal";
     const row = h(`div.item${on ? ".on" : ""}${it.enabled ? "" : ".off"}`, { onclick: () => { this.sel = on ? null : key; this.mode = null; this.paint(); } },
       h("div.row", h("div.col.grow", h("span.name.trunc", it.name), on ? null : h("span.desc.trunc", it.description || "Sin descripción")),
-        mine ? toggle(it.enabled, (e) => { e.stopPropagation(); this.act(it.enabled ? "Desactivando…" : "Activando…", () => this.api.toggle(kind, kind === "skill" ? it.dir : it.file), `«${it.name}» ${it.enabled ? "desactivado" : "activado"}.`); }, it.enabled ? "Desactivar" : "Activar")
-          : it.enabled ? null : h("span.dim", { style: { fontSize: "11px" } }, "Plugin apagado")));
+        it.enabled ? null : h("span.dim", { style: { fontSize: "11px" } }, mine ? "Desactivado" : "Plugin apagado")));
     if (!on) return row;
     const stop = (fn) => (e) => { e.stopPropagation(); fn(); };
     row.append(h("div.muted", { style: { fontSize: "12px", userSelect: "text" } }, it.description || "Sin descripción"));
@@ -123,6 +122,7 @@ export class KitPanel {
       button("Cancelar", stop(() => { this.mode = null; this.paint(); }))));
     else row.append(h("div.row", { style: { flexWrap: "wrap" } },
       button(mine ? "Editar" : "Ver", stop(() => this.ctx.api.shell.editor(it.file)), { kind: mine ? "primary" : null, ic: "code" }),
+      mine && !it.enabled ? button("Activar", stop(() => this.act("Activando…", () => this.api.toggle(kind, kind === "skill" ? it.dir : it.file), `«${it.name}» activado.`)), { ic: "check" }) : null,
       button("Abrir carpeta", stop(() => this.ctx.api.shell.open(it.dir)), { ic: "folder" }),
       h("span.grow"),
       mine ? button("Papelera", stop(() => { this.mode = "confirm"; this.paint(); }), { ic: "trash" }) : h("span.dim", { style: { fontSize: "11px" } }, it.source === "plugin" ? `Del plugin ${it.plugin}` : "Sincronizado desde claude.ai")));

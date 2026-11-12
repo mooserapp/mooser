@@ -1,6 +1,6 @@
 // Plugins: your own features, as files in ~/.mooser/plugins/<name>/main.js. Each one is an ES
-// module whose default export gets the `mooser` object below. Turn one on in Settings, Customize
-// (or "plugins": { "<name>": true } in settings.json). Saving a plugin reloads the window; terminals
+// module whose default export gets the `mooser` object below. Turn one on with
+// "plugins": { "<name>": true } in settings.json. Saving a plugin reloads the window; terminals
 // keep running and come back as they were.
 //
 // Plugins are your own code and run with the app's rights: they can run programs (mooser.exec).

@@ -117,7 +117,7 @@ function watch(onChange) {
 }
 
 const EXAMPLE = `// Ejemplo: un comando en la paleta y un contador en la barra de estado.
-// Actívalo en Configuración, Personalizar (o en settings.json: "plugins": { "ejemplo": true }).
+// Actívalo en settings.json: "plugins": { "ejemplo": true }.
 export default function activate(mooser) {
   mooser.commands.add({
     label: "Saludar desde un plugin",
