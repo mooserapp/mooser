@@ -61,8 +61,8 @@ export class ServersPanel {
     return h("div.item", { ondblclick: () => this.connect(x) },
       h("div.row", { style: { gap: "10px" } },
         h("div", { style: { width: "32px", height: "32px", borderRadius: "9px", background: `${c}26`, border: `1px solid ${c}55`, display: "flex", alignItems: "center", justifyContent: "center", color: c, flex: "none" } }, icon("server", 15)),
-        h("div.col.grow", h("div.row", { style: { gap: "7px" } }, h("span.name.trunc", label(x)), h(`span.dot.${dot}`, { style: { width: "7px", height: "7px" } })),
-          h("span.desc.trunc", { style: { color: st?.detail && st.state !== "ok" ? `var(--${dot})` : "" } }, detail)),
+        h("div.col.grow", h("div.row", { style: { gap: "7px" } }, h("span.name.trunc", { translate: "no" }, label(x)), h(`span.dot.${dot}`, { style: { width: "7px", height: "7px" } })),
+          h("span.desc.trunc", { translate: st?.detail && st.state !== "ok" ? "yes" : "no", style: { color: st?.detail && st.state !== "ok" ? `var(--${dot})` : "" } }, detail)),
         x.imported ? null : h("button.icon-btn", { title: "Editar", onclick: (e) => { e.stopPropagation(); this.edit(x); } }, icon("pencil", 13))),
       h("div.row", { style: { paddingLeft: "42px", gap: "6px" } },
         teal(button("Conectar", () => this.connect(x), { ic: "terminal" })),
@@ -128,9 +128,9 @@ export class ServersPanel {
       el.style.gap = "8px"; el.style.minWidth = "0";
       el.append(h("div.row", { style: { gap: "4px", flexWrap: "wrap" } }, sources.map((src) => {
         const c = src.host ? this.colorOf(this.groupOf(src.host)) : "var(--accent)", on = s.src === src.id;
-        return h("button.chip", { style: { background: on ? "var(--selected)" : "var(--surface)", border: "1px solid var(--border)", color: on ? "var(--fg)" : "var(--muted)", fontWeight: on ? 600 : 400 }, onclick: () => { s.src = src.id; s.path = src.id === "local" ? this.ctx.W.home : ""; load(i); } }, h("span.dot", { style: { background: c, width: "7px", height: "7px" } }), src.name);
+        return h("button.chip", { style: { background: on ? "var(--selected)" : "var(--surface)", border: "1px solid var(--border)", color: on ? "var(--fg)" : "var(--muted)", fontWeight: on ? 600 : 400 }, onclick: () => { s.src = src.id; s.path = src.id === "local" ? this.ctx.W.home : ""; load(i); } }, h("span.dot", { style: { background: c, width: "7px", height: "7px" } }), h("span", src.host ? { translate: "no" } : null, src.name));
       })));
-      el.append(h("div.row", h("button.icon-btn", { title: "Subir", onclick: () => { if (s.parentPath) { s.path = s.parentPath; load(i); } } }, icon("up", 14)), h("span.trunc.grow.muted", { style: { fontSize: "12px" } }, s.path),
+      el.append(h("div.row", h("button.icon-btn", { title: "Subir", onclick: () => { if (s.parentPath) { s.path = s.parentPath; load(i); } } }, icon("up", 14)), h("span.trunc.grow.muted", { translate: "no", style: { fontSize: "12px" } }, s.path),
         s.src === "local" ? h("button.icon-btn", { title: "Elegir carpeta", onclick: async () => { const f = await this.ctx.api.dialog.folder(); if (f) { s.path = f; load(i); } } }, icon("folder", 14)) : null,
         h("button.icon-btn", { title: "Volver a leer", onclick: () => load(i) }, icon("refresh", 14))));
       const list = h("div.scroll", { style: { border: "1px solid var(--border-soft)", borderRadius: "10px", padding: "4px" } });
@@ -141,7 +141,7 @@ export class ServersPanel {
         list.append(h("div.row", { style: { height: "30px", padding: "0 8px", borderRadius: "8px", flex: "none", background: on ? "var(--selected)" : "" },
           onclick: () => { if (on) s.sel.delete(it.name); else s.sel.add(it.name); paint(i); },
           ondblclick: () => { if (it.dir) { s.path = joinP(s, it.name); load(i); } } },
-        (() => { const ic = icon(it.dir ? "folder" : "file", 14); ic.style.color = it.dir ? "#ffc98b" : "var(--dim)"; return ic; })(), h("span.grow.trunc", it.name)));
+        (() => { const ic = icon(it.dir ? "folder" : "file", 14); ic.style.color = it.dir ? "#ffc98b" : "var(--dim)"; return ic; })(), h("span.grow.trunc", { translate: "no" }, it.name)));
       }
       el.append(list);
       const n = s.sel.size;

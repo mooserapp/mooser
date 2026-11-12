@@ -112,11 +112,11 @@ export class KitPanel {
   item(kind, it) {
     const key = `${kind}:${it.file}`, on = this.sel === key, mine = it.source === "personal";
     const row = h(`div.item${on ? ".on" : ""}${it.enabled ? "" : ".off"}`, { onclick: () => { this.sel = on ? null : key; this.mode = null; this.paint(); } },
-      h("div.row", h("div.col.grow", h("span.name.trunc", it.name), on ? null : h("span.desc.trunc", it.description || "Sin descripción")),
+      h("div.row", h("div.col.grow", h("span.name.trunc", { translate: "no" }, it.name), on ? null : h("span.desc.trunc", it.description ? { translate: "no" } : null, it.description || "Sin descripción")),
         it.enabled ? null : h("span.dim", { style: { fontSize: "11px" } }, mine ? "Desactivado" : "Plugin apagado")));
     if (!on) return row;
     const stop = (fn) => (e) => { e.stopPropagation(); fn(); };
-    row.append(h("div.muted", { style: { fontSize: "12px", userSelect: "text" } }, it.description || "Sin descripción"));
+    row.append(h("div.muted", { translate: it.description ? "no" : "yes", style: { fontSize: "12px", userSelect: "text" } }, it.description || "Sin descripción"));
     if (this.mode === "confirm") row.append(h("div.row", h("span.grow", `¿Enviar «${it.name}» a la papelera?`),
       button("Enviar a la papelera", stop(() => this.act("Enviando…", () => this.ctx.api.fs.trash([kind === "skill" ? it.dir : it.file]), "Enviado a la papelera.")), { kind: "danger" }),
       button("Cancelar", stop(() => { this.mode = null; this.paint(); }))));
@@ -158,7 +158,7 @@ export class KitPanel {
   mcpRow(s) {
     const key = `mcp:${s.name}`, on = this.sel === key;
     const row = h(`div.item${on ? ".on" : ""}`, { onclick: () => { this.sel = on ? null : key; this.mode = null; this.paint(); } },
-      h("div.row", h(`span.dot.${MCP_DOT[s.state]}`), h("div.col.grow", h("span.name.trunc", s.label), h("span.desc.trunc.mono", s.target)),
+      h("div.row", h(`span.dot.${MCP_DOT[s.state]}`), h("div.col.grow", h("span.name.trunc", { translate: "no" }, s.label), h("span.desc.trunc.mono", { translate: "no" }, s.target)),
         h("span", { style: { fontSize: "11.5px", color: s.state === "ok" ? "var(--dim)" : `var(--${MCP_DOT[s.state]})` } }, MCP_STATUS[s.state] ?? s.status)));
     if (!on) return row;
     const stop = (fn) => (e) => { e.stopPropagation(); fn(); };
@@ -179,11 +179,11 @@ export class KitPanel {
         const key = `plugin:${p.id}`, on = this.sel === key;
         const parts = [p.skills && plural(p.skills, "skill", "skills"), p.agents && plural(p.agents, "agente", "agentes"), p.commands && plural(p.commands, "comando", "comandos"), p.mcp && `${p.mcp} MCP`, p.hooks && "hooks"].filter(Boolean);
         const row = h(`div.item${on ? ".on" : ""}${p.enabled ? "" : ".off"}`, { onclick: () => { this.sel = on ? null : key; this.mode = null; this.paint(); } },
-          h("div.row", h("div.col.grow", h("span.name.trunc", p.name, h("span.dim", { style: { fontWeight: 400, fontSize: "11px", marginLeft: "6px" } }, p.version.split("-")[0])), h("span.desc.trunc", parts.join(", ") || "Sin componentes")),
+          h("div.row", h("div.col.grow", h("span.name.trunc", { translate: "no" }, p.name, h("span.dim", { style: { fontWeight: 400, fontSize: "11px", marginLeft: "6px" } }, p.version.split("-")[0])), h("span.desc.trunc", parts.join(", ") || "Sin componentes")),
             toggle(p.enabled, (e) => { e.stopPropagation(); this.act(p.enabled ? "Apagando…" : "Encendiendo…", () => this.api.claude(["plugin", p.enabled ? "disable" : "enable", p.id]), `${p.name} ${p.enabled ? "apagado" : "encendido"}. Se aplica en las sesiones nuevas de Claude Code.`); }, p.enabled ? "Apagar" : "Encender")));
         if (on) {
           const stop = (fn) => (e) => { e.stopPropagation(); fn(); };
-          row.append(h("div.muted", { style: { fontSize: "12px" } }, p.description || "Sin descripción"), h("span.dim", { style: { fontSize: "11.5px" } }, `Tienda: ${p.marketplace}`));
+          row.append(h("div.muted", { translate: p.description ? "no" : "yes", style: { fontSize: "12px" } }, p.description || "Sin descripción"), h("span.dim", { style: { fontSize: "11.5px" } }, `Tienda: ${p.marketplace}`));
           if (this.mode === "confirm") row.append(h("div.row", h("span.grow", `¿Desinstalar ${p.name}?`), button("Desinstalar", stop(() => this.act("Desinstalando…", () => this.api.claude(["plugin", "uninstall", p.id]), `${p.name} desinstalado.`)), { kind: "danger" }), button("Cancelar", stop(() => { this.mode = null; this.paint(); }))));
           else row.append(h("div.row", button("Actualizar", stop(() => this.act("Actualizando…", () => this.api.claude(["plugin", "update", p.id]), `${p.name} está al día.`)), { kind: "primary", ic: "refresh" }),
             button("Abrir carpeta", stop(() => this.ctx.api.shell.open(p.dir)), { ic: "folder" }), h("span.grow"), button("Desinstalar", stop(() => { this.mode = "confirm"; this.paint(); }), { ic: "trash" })));

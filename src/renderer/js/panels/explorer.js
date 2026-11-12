@@ -64,13 +64,13 @@ export class ExplorerPanel {
       h("div.row.grow", { style: { gap: "2px" } }, skipped ? h("span.dim", "… ›") : null,
         crumbs.map((c, i) => {
           const last = i === crumbs.length - 1, to = (this.path.startsWith(s) ? s : "") + parts.slice(0, skipped + i + 1).join(s) + (/^[A-Za-z]:$/.test(parts[0]) && skipped + i === 0 ? s : "");
-          return [i ? h("span.dim", "›") : null, h("span.trunc", { style: { padding: "2px 4px", borderRadius: "6px", fontWeight: last ? 600 : 400, color: last ? "var(--fg)" : "var(--muted)", cursor: last ? "default" : "pointer", flex: last ? "1" : "none", maxWidth: last ? "" : "140px" }, onclick: last ? null : () => this.go(to) }, c)];
+          return [i ? h("span.dim", "›") : null, h("span.trunc", { translate: "no", style: { padding: "2px 4px", borderRadius: "6px", fontWeight: last ? 600 : 400, color: last ? "var(--fg)" : "var(--muted)", cursor: last ? "default" : "pointer", flex: last ? "1" : "none", maxWidth: last ? "" : "140px" }, onclick: last ? null : () => this.go(to) }, c)];
         })),
       h(`button.icon-btn${this.places ? ".on" : ""}`, { title: "Lugares", style: { width: compact ? "28px" : "auto", padding: compact ? "0" : "0 9px", gap: "6px" }, onclick: () => { this.places = !this.places; this.paint(); } }, icon("home", 14), compact ? null : h("span", { style: { fontSize: "12px" } }, "Lugares")),
       ib("refresh", "Volver a leer", () => this.load())));
 
     if (this.places) el.append(h("div.card", { style: { padding: "4px", gap: "1px" } },
-      this.roots().map((r) => h("div.opt", { onclick: () => this.go(r.path) }, icon(r.space ? "rocket" : "folder", 14), h("span.grow.trunc", r.label))),
+      this.roots().map((r) => h("div.opt", { onclick: () => this.go(r.path) }, icon(r.space ? "rocket" : "folder", 14), h("span.grow.trunc", r.space ? { translate: "no" } : null, r.label))),
       h("div.opt", { onclick: async () => { const f = await this.ctx.api.dialog.folder("Elige una carpeta"); if (f) this.go(f); } }, icon("search", 14), "Elegir otra carpeta…")));
 
     const q = input("Filtrar en esta carpeta", this.q, { oninput: (e) => { this.q = e.target.value.toLowerCase(); this.paintList(list); } });
@@ -125,7 +125,7 @@ export class ExplorerPanel {
         ondblclick: () => (it.dir ? this.go(full) : this.open(full)),
       },
       (() => { const i = icon(k.ic, 15); i.style.color = k.color; return i; })(),
-      h("span.grow.trunc", it.name),
+      h("span.grow.trunc", { translate: "no" }, it.name),
       it.git && !this.compact ? h("span.chip", { style: { background: `${AMBER}22`, color: AMBER, height: "18px", fontSize: "10.5px" } }, "proyecto") : null,
       it.dir ? h("button.icon-btn", { title: "Entrar", style: { width: "24px", height: "24px" }, onclick: (e) => { e.stopPropagation(); this.go(full); } }, icon("chevron", 12))
         : h("span.dim", { style: { fontSize: "11px" } }, sizeText(it.size))));

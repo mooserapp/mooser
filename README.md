@@ -1,75 +1,121 @@
 <p align="center">
-  <img src="assets/icon.png" width="112" alt="Mooser">
+  <img src="assets/icon.png" width="120" alt="Mooser">
 </p>
 
 <h1 align="center">Mooser</h1>
 
 <p align="center">
-  Un hogar tranquilo para tus terminales y tus agentes de IA.<br>
+  <b>Un hogar tranquilo para tus terminales y tus agentes de IA.</b><br>
   Espacios por proyecto, pestañas, paneles divididos, el estado de cada agente<br>
   y paneles para tus skills, archivos, servidores SSH y el uso de tu plan de Claude.
 </p>
 
-<p align="center"><b>Windows</b> · <b>macOS</b> · Licencia MIT</p>
+<p align="center">
+  Windows · macOS (Apple Silicon e Intel) · Español / English · Licencia MIT
+</p>
+
+<p align="center"><a href="README.en.md">Read in English</a></p>
+
+<p align="center">
+  <img src="docs/images/screenshot.png" alt="Mooser con dos terminales, un agente trabajando y el uso de Claude" width="900">
+</p>
 
 ---
 
+## Índice
+
+- [Qué es](#qué-es)
+- [Funciones](#funciones)
+- [Descargar e instalar](#descargar-e-instalar)
+- [Primeros pasos](#primeros-pasos)
+- [Atajos de teclado](#atajos-de-teclado)
+- [Configuración](#configuración)
+- [Idioma](#idioma)
+- [Privacidad y seguridad](#privacidad-y-seguridad)
+- [Desarrollo](#desarrollo)
+- [Crear los instaladores](#crear-los-instaladores)
+- [Preguntas frecuentes](#preguntas-frecuentes)
+- [Licencia](#licencia)
+
 ## Qué es
 
-Mooser es una app de escritorio para trabajar con varios agentes de código a la vez (Claude Code, Codex, Gemini CLI, Aider, OpenCode…) sin perderte entre ventanas de terminal.
+Mooser es una app de escritorio para trabajar con varios agentes de código a la vez, como Claude Code, Codex, Gemini CLI, Aider u OpenCode, sin perderte entre ventanas de terminal. Cada proyecto es un espacio con sus pestañas y paneles. Mooser reconoce a los agentes que corren en ellos, te dice cuál está trabajando, cuál te necesita y cuál terminó, y te avisa cuando estás en otra cosa.
 
-- **Espacios**: cada carpeta de proyecto es un espacio con sus pestañas. Cambias de proyecto con un clic o con `Alt+1…9`.
+## Funciones
+
+**Espacio de trabajo**
+- **Espacios**: cada carpeta de proyecto es un espacio. Cambias entre ellos con un clic o con `Alt+1…9`.
 - **Pestañas y paneles**: divide cualquier panel a la derecha o hacia abajo, cambia el tamaño arrastrando los tres puntos y amplía uno con un atajo.
-- **Agentes con estado**: Mooser reconoce cuando corre un agente y muestra si está *trabajando*, si *te necesita* (te pide confirmar algo) o si *terminó*. Te avisa con un sonido suave y una notificación cuando estás en otra cosa.
-- **Kit de IA**: los skills, agentes, servidores MCP, plugins y el modelo por defecto de Claude Code en un solo lugar. Crea, edita, activa o desactiva tus skills y agentes; enciende o apaga plugins; añade o quita MCP; elige el modelo.
+- **Sesión guardada**: al cerrar se guardan tus espacios, pestañas y divisiones; al volver, cada terminal empieza de nuevo en su carpeta.
+- **Paleta de comandos**: todo con el teclado (`Ctrl+Shift+P` / `⌘⇧P`).
+
+**Agentes**
+- Reconoce Claude Code, Codex, Gemini CLI, Aider, OpenCode, Cursor Agent, Copilot CLI, Amp, Goose, Qwen Code y Kiro.
+- Estados: **trabajando**, **te necesita** (te hace una pregunta) y **terminó** (mientras mirabas otra cosa).
+- Avisos con un sonido suave y una notificación del sistema.
+- El botón **+** abre una terminal o arranca directamente el agente que elijas.
+
+**Panel lateral**
+- **Kit de IA**: los skills, agentes, servidores MCP, plugins y el modelo por defecto de Claude Code. Crea y edita tus skills y agentes, enciende o apaga plugins, añade o quita servidores MCP y elige el modelo.
 - **Explorador**: navega carpetas, abre archivos, abre una carpeta como espacio, crea, renombra, mueve, copia o envía a la papelera. Los iconos tienen color según el tipo de archivo.
-- **Servidores**: guarda tus servidores SSH por grupos de color, conéctate en una pestaña con la contraseña guardada (cifrada) y pasa archivos entre tu equipo y tus servidores, o de un servidor a otro.
-- **Uso de IA**: cuánto llevas usado de la sesión de 5 horas y de la semana de tu plan de Claude, con una cuenta atrás hasta que se restablece y un aviso opcional.
-- **Paleta de comandos** (`Ctrl+Shift+P` / `⌘⇧P`) para hacerlo todo con el teclado.
+- **Servidores**: guarda tus servidores SSH en grupos de color, conéctate en una pestaña con la contraseña guardada (cifrada) y pasa archivos entre tu equipo y tus servidores, o de un servidor a otro.
+- **Uso de IA**: cuánto llevas de la sesión de 5 horas y de la semana de tu plan de Claude, con una cuenta atrás hasta que se restablece y un aviso opcional.
 
-## Instalar
+**A tu gusto**
+- Cinco temas (Cáustica, Medianoche, Aurora, Ámbar y Coral), color de acento, fondo propio, cristal, tamaños y animaciones.
+- Español e inglés.
 
-### Desde el código (Windows y macOS)
+<p align="center">
+  <img src="docs/images/settings.png" alt="La ventana de Configuración" width="760">
+</p>
+
+## Descargar e instalar
+
+### Con el instalador
+
+Descarga el de tu sistema en la página de **[Releases](../../releases)**:
+
+| Sistema | Archivo |
+|---|---|
+| Windows 10 u 11 (64 bits) | `Mooser-Setup-x.y.z-x64.exe` |
+| macOS con Apple Silicon (M1, M2, M3, M4…) | `Mooser-x.y.z-mac-arm64.dmg` |
+| macOS con Intel | `Mooser-x.y.z-mac-x64.dmg` |
+
+- **Windows**: abre el instalador, elige el idioma y la carpeta, y listo. Si Windows SmartScreen avisa, pulsa **Más información** y luego **Ejecutar de todas formas** (el instalador aún no está firmado).
+- **macOS**: abre el `.dmg` y arrastra Mooser a **Aplicaciones**. Si la app no está firmada, la primera vez ábrela con clic derecho y **Abrir**. Si macOS dice que "está dañada", ejecuta una vez en la Terminal:
+  ```sh
+  xattr -dr com.apple.quarantine /Applications/Mooser.app
+  ```
+
+### Desde el código
 
 Necesitas [Node.js](https://nodejs.org) 20 o más reciente y Git.
 
 ```sh
-git clone <url-de-este-repositorio> mooser
+git clone https://github.com/<tu-usuario>/mooser.git
 cd mooser
 npm install
 npm start
 ```
 
-`npm install` descarga Electron y las terminales nativas ([node-pty](https://github.com/microsoft/node-pty), que ya trae binarios para Windows y macOS: no hace falta compilar nada).
-
-### Crear el instalador
-
-```sh
-npm run dist:win   # en Windows: dist/Mooser Setup x.y.z.exe
-npm run dist:mac   # en un Mac:  dist/Mooser-x.y.z.dmg
-```
-
-Cada instalador se crea en su propio sistema: el de macOS hay que generarlo en un Mac. El de macOS no va firmado; la primera vez ábrelo con clic derecho y **Abrir**.
-
 ### Requisitos opcionales
 
 | Para | Necesitas |
 |---|---|
-| Kit de IA | [Claude Code](https://docs.claude.com/claude-code) instalado (`claude` en el PATH o en `~/.local/bin`) |
+| Kit de IA | [Claude Code](https://docs.claude.com/claude-code) instalado |
 | Uso de IA | Haber iniciado sesión en Claude Code en este equipo |
-| Servidores con contraseña guardada en Windows | [Git for Windows](https://git-scm.com/download/win) (su `ssh` acepta la contraseña sin teclearla). Sin él, ssh te la pide en la terminal |
-| Editar skills y agentes | VS Code (`code`) o cualquier editor por defecto del sistema |
+| Contraseñas de servidores guardadas, en Windows | [Git for Windows](https://git-scm.com/download/win) (su `ssh` acepta la contraseña sin teclearla). Sin él, ssh te la pide en la terminal |
+| Editar skills y agentes | VS Code (`code`) o el editor por defecto del sistema |
 
-## Usar
+## Primeros pasos
 
 1. Pulsa **Abrir carpeta** y elige un proyecto: se crea un espacio con una terminal en esa carpeta.
-2. Pulsa **+** en la barra de pestañas para abrir otra terminal o arrancar directamente Claude Code, Codex o Gemini.
-3. Divide paneles desde la cabecera de cada uno o con los atajos. Arrastra los tres puntos entre paneles para cambiar el tamaño.
-4. Abre el panel lateral (botón de la derecha en la barra de pestañas) para el Kit de IA, el Explorador, los Servidores o el Uso de IA.
+2. Pulsa **+** en la barra de pestañas para abrir otra terminal o arrancar un agente.
+3. Divide paneles desde su cabecera o con los atajos. Arrastra los tres puntos entre paneles para cambiar el tamaño.
+4. Abre el panel lateral (el botón a la derecha de la barra de pestañas) para el Kit de IA, el Explorador, los Servidores o el Uso de IA.
+5. Pliega la barra lateral con su botón o arrastrando su borde: queda una columna de iconos con el estado de cada espacio y agente.
 
-Al cerrar Mooser se guardan tus espacios, pestañas y divisiones. Al abrirlo de nuevo, cada terminal vuelve a empezar en su carpeta.
-
-### Atajos
+## Atajos de teclado
 
 | Acción | Windows | macOS |
 |---|---|---|
@@ -93,41 +139,68 @@ Al cerrar Mooser se guardan tus espacios, pestañas y divisiones. Al abrirlo de 
 
 ## Configuración
 
-Pulsa **Configuración** abajo en la barra lateral (o `Ctrl+,` / `⌘,`). Ahí está todo:
+Pulsa **Configuración** abajo en la barra lateral (o `Ctrl+,` / `⌘,`):
 
-- **Apariencia**: el tema (Cáustica, Medianoche, Aurora, Ámbar, Coral), el color de acento, el fondo (el del tema, un color liso o tu propia imagen), la opacidad y el desenfoque del cristal, las esquinas, la separación, el tamaño del texto y las animaciones.
-- **Terminal**: fuente, tamaño, interlineado, cursor, historial, la shell y copiar al seleccionar.
+- **Apariencia**: idioma, tema, color de acento, fondo (el del tema, un color liso o tu imagen), opacidad y desenfoque del cristal, esquinas, separación, tamaño del texto y animaciones.
+- **Terminal**: fuente, tamaño, interlineado, cursor, historial, shell y copiar al seleccionar.
 - **Avisos**: sonido, notificaciones del sistema y el aviso de restablecimiento de Claude.
-- **Agentes**: los que aparecen en el botón **+** de la barra de pestañas, con su comando.
+- **Agentes**: los que aparecen en el botón **+**, con su comando.
 
-Todo se guarda en `~/.mooser/settings.json`, un archivo que también puedes editar a mano. En esa carpeta también puedes poner tus propios estilos (`custom.css`) y plugins (`plugins/`); cómo funcionan está en su `AGENTS.md`.
+Todo se guarda en `~/.mooser/settings.json` (en Windows, `C:\Users\<tú>\.mooser\settings.json`), un archivo que también puedes editar a mano. En esa carpeta también puedes poner tus propios estilos (`custom.css`) y plugins (`plugins/`); cómo funcionan está en su `AGENTS.md`. Los cambios se aplican al guardar.
+
+## Idioma
+
+Mooser está en español e inglés. Por defecto usa el idioma de tu sistema; puedes cambiarlo en **Configuración, Apariencia, Idioma**. El instalador de Windows también te deja elegir su idioma.
 
 ## Privacidad y seguridad
 
-- **Contraseñas de servidores**: se guardan solo cifradas con el almacén seguro del sistema (DPAPI en Windows, el Llavero en macOS) mediante `safeStorage` de Electron. Cuando ssh pide la contraseña, un pequeño ayudante se la pide a Mooser por un canal local con un código de un solo uso; nunca queda en un archivo ni en una variable de entorno en claro.
+- **Contraseñas de servidores**: se guardan solo cifradas con el almacén seguro del sistema (DPAPI en Windows, el Llavero en macOS). Cuando ssh pide la contraseña, un pequeño ayudante se la pide a Mooser por un canal local con un código de un solo uso; nunca queda en un archivo ni en una variable de entorno en claro.
 - **Uso de Claude**: Mooser lee la sesión que Claude Code ya guarda en tu equipo y la envía solo a `api.anthropic.com` para consultar tu uso. No la guarda ni la renueva.
-- **Kit de IA**: cambia solo la configuración de Claude Code en `~/.claude` (o a través de su propia CLI). Desactivar un skill o agente tuyo lo mueve a `~/.claude/skills-off` o `~/.claude/agents-off`; activarlo lo devuelve.
-- Sin telemetría. Mooser no envía nada a ningún otro sitio.
+- **Kit de IA**: cambia solo la configuración de Claude Code en `~/.claude`, o lo hace a través de su propia CLI.
+- **Plugins**: son tu propio código y se ejecutan con los permisos de la app.
+- **Sin telemetría**: Mooser no envía nada a ningún otro sitio.
 
-## Cómo está hecho
+## Desarrollo
+
+```sh
+npm install
+npm run dev     # con DevTools; al guardar algo en src/renderer la ventana se recarga
+```
 
 | Parte | Dónde |
 |---|---|
-| Ventana, IPC | `src/main/main.js`, `src/main/preload.js` |
-| Terminales y detección de agentes | `src/main/terminals.js` (node-pty) |
-| Kit de IA | `src/main/kit.js` |
-| Archivos | `src/main/files.js` |
-| SSH y ayudante de contraseñas | `src/main/ssh.js` |
-| Uso de Claude | `src/main/usage.js` |
-| Interfaz | `src/renderer/` (HTML, CSS y JavaScript sin framework; [xterm.js](https://xtermjs.org) para las terminales) |
-| Iconos de la app | `npm run icons` genera `build/icon.ico`, `build/icon.icns` y `assets/icon.png` desde `assets/logo.svg` |
+| Ventana e IPC | `src/main/main.js`, `src/main/preload.js` |
+| Terminales y detección de agentes | `src/main/terminals.js` ([node-pty](https://github.com/microsoft/node-pty)) |
+| Configuración del usuario (`~/.mooser`) | `src/main/config.js` |
+| Kit de IA, archivos, SSH, uso de Claude | `src/main/kit.js`, `files.js`, `ssh.js`, `usage.js` |
+| Interfaz | `src/renderer/` (JavaScript y CSS sin framework, [xterm.js](https://xtermjs.org) para las terminales) |
+| Idiomas | `src/renderer/js/i18n.js` |
+| Logo e iconos | `assets/logo.svg`; `npm run icons` genera `build/icon.ico`, `build/icon.icns` y `assets/icon.png` |
 
-El estado de un agente se deduce de lo que hace su terminal: el título que pone el programa, el comando que escribiste, si sigue imprimiendo (trabajando), si hace sonar la campana o hace una pregunta conocida (te necesita) o si se quedó quieto mientras mirabas otra cosa (terminó).
+La guía para trabajar en el código está en [AGENTS.md](AGENTS.md).
 
-## Diferencias con otras herramientas
+## Crear los instaladores
 
-Mooser es un proyecto propio, escrito desde cero, inspirado en la idea de multiplexores de agentes como [Herdr](https://herdr.dev). No usa su código. A diferencia de herramientas con un servidor aparte, en Mooser las terminales viven mientras la app está abierta: al cerrarla terminan, y al abrirla vuelven a empezar en su carpeta.
+Cada instalador se genera en su propio sistema, o en GitHub para los dos a la vez. Los pasos completos, incluida la firma y notarización para macOS, están en **[docs/BUILD.md](docs/BUILD.md)**. En resumen:
+
+```sh
+npm ci
+npm run dist:win   # en Windows → dist/Mooser-Setup-x.y.z-x64.exe
+npm run dist:mac   # en un Mac  → dist/Mooser-x.y.z-mac-arm64.dmg y …-x64.dmg
+```
+
+O publica una versión desde GitHub: `git tag v0.2.0 && git push --tags` construye los instaladores de Windows y macOS y los adjunta a un borrador de Release.
+
+## Preguntas frecuentes
+
+**¿Mis terminales siguen vivas si cierro Mooser?** No: viven mientras la app está abierta. Al volver a abrirla, cada pestaña empieza de nuevo en su carpeta.
+
+**¿Funciona sin Claude Code?** Sí. Las terminales, espacios, agentes, Explorador y Servidores funcionan igual; el Kit de IA y el Uso de IA necesitan Claude Code.
+
+**¿Qué agentes reconoce?** Los que se lanzan desde la terminal y se identifican por su nombre o por el título que ponen: Claude Code, Codex, Gemini CLI, Aider, OpenCode, Cursor Agent, Copilot CLI, Amp, Goose, Qwen Code y Kiro.
+
+**Mi shell no es PowerShell / zsh.** Elige otra en **Configuración, Terminal, Shell** (por ejemplo `bash` o la ruta completa al programa).
 
 ## Licencia
 
-[MIT](LICENSE)
+[MIT](LICENSE). Mooser está escrito desde cero e inspirado en la idea de los multiplexores de agentes; no usa código de otros proyectos de ese tipo.

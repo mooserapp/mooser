@@ -11,9 +11,10 @@
     "start": "electron .",
     "dev": "electron . --dev",
     "icons": "electron scripts/icons.cjs",
-    "dist": "electron-builder",
-    "dist:win": "electron-builder --win",
-    "dist:mac": "electron-builder --mac"
+    "dist": "electron-builder --publish never",
+    "dist:win": "electron-builder --win --publish never",
+    "dist:mac": "electron-builder --mac --publish never",
+    "release": "electron-builder --publish always"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.11.0",
@@ -44,22 +45,75 @@
     ],
     "win": {
       "target": [
-        "nsis"
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
       ],
       "icon": "build/icon.ico"
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "multiLanguageInstaller": true,
+      "installerLanguages": [
+        "en_US",
+        "es_ES"
+      ],
+      "displayLanguageSelector": true,
+      "createDesktopShortcut": true,
+      "artifactName": "${productName}-Setup-${version}-${arch}.${ext}"
     },
     "mac": {
       "target": [
-        "dmg",
-        "zip"
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
       ],
       "icon": "build/icon.icns",
-      "category": "public.app-category.developer-tools"
+      "category": "public.app-category.developer-tools",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
     },
-    "npmRebuild": false
+    "npmRebuild": false,
+    "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+    "dmg": {
+      "title": "Mooser ${version}",
+      "contents": [
+        {
+          "x": 140,
+          "y": 200
+        },
+        {
+          "x": 400,
+          "y": 200,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "publish": {
+      "provider": "github",
+      "releaseType": "draft"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OWNER/mooser.git"
   }
 }

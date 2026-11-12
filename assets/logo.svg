@@ -1,38 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
     <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#1b3a63"/>
-      <stop offset="1" stop-color="#0b1a30"/>
+      <stop offset="0" stop-color="#1d3d68"/>
+      <stop offset="1" stop-color="#0a1830"/>
     </linearGradient>
-    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity=".22"/>
-      <stop offset=".5" stop-color="#ffffff" stop-opacity=".04"/>
-      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".16"/>
+      <stop offset=".45" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
-    <linearGradient id="moose" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#c9d4ff"/>
-      <stop offset=".55" stop-color="#a9b8ff"/>
-      <stop offset="1" stop-color="#6fd6e0"/>
+    <linearGradient id="mark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c6d1ff"/>
+      <stop offset=".6" stop-color="#a9b8ff"/>
+      <stop offset="1" stop-color="#7fd3e3"/>
     </linearGradient>
+    <g id="moose">
+      <!-- antlers: a broad palm each, four tines -->
+      <path d="M222 216C184 216 146 206 124 180C110 163 104 141 106 116L124 138L128 100L146 124L158 94L170 128L186 104C192 130 198 156 206 178C211 192 216 204 222 216Z"/>
+      <path d="M290 216C328 216 366 206 388 180C402 163 408 141 406 116L388 138L384 100L366 124L354 94L342 128L326 104C320 130 314 156 306 178C301 192 296 204 290 216Z"/>
+      <!-- ears -->
+      <path d="M200 238C178 226 152 228 136 246C156 260 182 260 202 252Z"/>
+      <path d="M312 238C334 226 360 228 376 246C356 260 330 260 310 252Z"/>
+      <!-- head: brow, long face, broad muzzle -->
+      <path fill-rule="evenodd" d="M256 192C290 192 312 206 316 232L322 300C326 330 336 352 332 378C326 414 294 432 256 432C218 432 186 414 180 378C176 352 186 330 190 300L196 232C200 206 222 192 256 192ZM226 258A10 10 0 1 0 226 278A10 10 0 1 0 226 258ZM286 258A10 10 0 1 0 286 278A10 10 0 1 0 286 258ZM238 384A10 7 0 1 0 238 398A10 7 0 1 0 238 384ZM274 384A10 7 0 1 0 274 398A10 7 0 1 0 274 384Z"/>
+      <!-- the bell under the chin -->
+      <path d="M242 426C246 446 251 460 256 472C261 460 266 446 270 426Z"/>
+    </g>
   </defs>
   <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#tile)"/>
-  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#glass)"/>
-  <rect x="17.5" y="17.5" width="477" height="477" rx="110.5" fill="none" stroke="#ffffff" stroke-opacity=".22" stroke-width="3"/>
-  <!-- antlers: two palmate fans, each a broad palm with three tines -->
-  <path fill="url(#moose)" d="M214 214c-34-4-66-18-86-44-12-16-18-36-16-56l22 24 4-38 22 30 10-40 18 36 16-30 6 44c4 26 10 48 4 74z"/>
-  <path fill="url(#moose)" d="M298 214c34-4 66-18 86-44 12-16 18-36 16-56l-22 24-4-38-22 30-10-40-18 36-16-30-6 44c-4 26-10 48-4 74z"/>
-  <!-- head: long brow, heavy muzzle, the bell under the chin -->
-  <path fill="url(#moose)" d="M256 196c30 0 52 14 58 40l6 70c2 26 8 44 4 64-6 30-34 50-68 50s-62-20-68-50c-4-20 2-38 4-64l6-70c6-26 28-40 58-40z"/>
-  <path fill="url(#moose)" d="M246 418c4 22 8 36 10 44 2-8 6-22 10-44z"/>
-  <!-- ears -->
-  <path fill="url(#moose)" d="M200 236c-22-2-40 6-50 20 18 8 36 8 52 0z"/>
-  <path fill="url(#moose)" d="M312 236c22-2 40 6 50 20-18 8-36 8-52 0z"/>
-  <!-- eyes and nostrils, cut from the tile color -->
-  <circle cx="226" cy="262" r="9" fill="#0b1a30"/>
-  <circle cx="286" cy="262" r="9" fill="#0b1a30"/>
-  <ellipse cx="238" cy="382" rx="9" ry="6" fill="#0b1a30" opacity=".7"/>
-  <ellipse cx="274" cy="382" rx="9" ry="6" fill="#0b1a30" opacity=".7"/>
-  <!-- the prompt: a terminal caret on the brow -->
-  <path d="M238 214l14 10-14 10" fill="none" stroke="#0b1a30" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M258 236h18" stroke="#0b1a30" stroke-width="7" stroke-linecap="round"/>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#sheen)"/>
+  <rect x="17.5" y="17.5" width="477" height="477" rx="110.5" fill="none" stroke="#fff" stroke-opacity=".18" stroke-width="3"/>
+  <use href="#moose" fill="url(#mark)" transform="translate(256 256) scale(1.06) translate(-256 -283)"/>
 </svg>

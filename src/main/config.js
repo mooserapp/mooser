@@ -16,6 +16,7 @@ const DIR = process.env.MOOSER_HOME || path.join(os.homedir(), ".mooser");
 const SETTINGS = path.join(DIR, "settings.json");
 
 const DEFAULTS = {
+  language: "auto",
   theme: "caustica",
   appearance: { accent: null, background: "preset", glass: 0.56, blur: 22, radius: 18, gap: 10, uiFontSize: 13, animations: true },
   terminal: { fontFamily: "", fontSize: 14, lineHeight: 1.15, cursorStyle: "block", cursorBlink: true, scrollback: 10000, shell: "", shellArgs: [], copyOnSelect: false },

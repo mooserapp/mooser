@@ -58,6 +58,8 @@ function render(ctx, id, repaint) {
   if (id === "look") {
     const p = Settings.preset();
     return [
+      row("Idioma", "Cambiar el idioma recarga la ventana; tus terminales siguen abiertas.", select(s.language ?? "auto", [["auto", "Automático (el del sistema)"], ["es", "Español"], ["en", "English"]],
+        (v) => Settings.set({ language: v }).then(() => api.config.reload()))),
       h("h3", "Tema"),
       h("div.presets", Object.entries(PRESETS).map(([key, pr]) => h(`button.preset${s.theme === key ? ".on" : ""}`, { onclick: () => Settings.set({ theme: key, appearance: { accent: null } }) },
         h("span.preset-swatch", { style: { background: pr.bg === "image" ? `url("${pr.image}") center / cover` : pr.bg } }, h("i", { style: { background: pr.accent } })),

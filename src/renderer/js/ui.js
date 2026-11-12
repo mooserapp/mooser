@@ -13,6 +13,7 @@ export function h(spec, props, ...children) {
   for (const [k, v] of Object.entries(props ?? {})) {
     if (v == null || v === false) continue;
     if (k === "style" && typeof v === "object") Object.assign(el.style, v);
+    else if (k === "translate") el.setAttribute("translate", v === false ? "yes" : String(v));
     else if (k.startsWith("on") && typeof v === "function") el.addEventListener(k.slice(2), v);
     else if (k in el && !k.includes("-")) el[k] = v;
     else el.setAttribute(k, v === true ? "" : v);

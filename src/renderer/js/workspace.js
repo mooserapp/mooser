@@ -252,8 +252,8 @@ function paintHead(paneId) {
   const folder = base(st.cwd || at.node.cwd);
   clear(rt.head).append(
     st.agent ? h(`span.dot.${st.status}`, { title: STATUS_WORD[st.status] }) : icon("terminal", 13),
-    h("span.title.trunc", title),
-    h("span.trunc.dim.grow", folder),
+    h("span.title.trunc", at.node.name || st.agent ? { translate: "no" } : null, title),
+    h("span.trunc.dim.grow", { translate: "no" }, folder),
     iconButton("splitRight", "Dividir a la derecha", (e) => { e.stopPropagation(); split("row", paneId); }),
     iconButton("splitDown", "Dividir hacia abajo", (e) => { e.stopPropagation(); split("col", paneId); }),
     iconButton("maximize", W.zoomed === paneId ? "Restaurar" : "Ampliar", (e) => { e.stopPropagation(); focusPane(paneId); toggleZoom(); }),

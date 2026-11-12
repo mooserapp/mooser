@@ -56,6 +56,7 @@ export class UsagePanel {
   }
 
   paint() {
+    this.alertOn = Settings.get()?.alerts?.usageReset !== false;
     const el = clear(this.el), five = this.data?.five, week = this.data?.week;
     const tier = this.plan?.tier && /20x/.test(this.plan.tier) ? " 20×" : this.plan?.tier && /5x/.test(this.plan.tier) ? " 5×" : "";
     const plan = this.plan?.type ? `Plan ${PLAN[this.plan.type] ?? this.plan.type}${tier}` : "";
@@ -88,7 +89,7 @@ export class UsagePanel {
     const agents = this.ctx.WS.agents();
     body.append(h("div.muted", { style: { padding: "8px 4px 2px", fontSize: "12.5px" } }, agents.length ? `Agentes abiertos · ${agents.length}` : "Agentes abiertos"));
     body.append(...(agents.length ? agents.map((a) => h("div.agent", { onclick: () => this.ctx.WS.focusPane(a.pane.id) },
-      h(`span.dot.${a.status}`), h("span.grow.trunc", a.agent), h("span.dim", { style: { fontSize: "11.5px" } }, `${this.ctx.WS.label(a.space)} · ${STATUS_WORD[a.status]}`)))
+      h(`span.dot.${a.status}`), h("span.grow.trunc", a.agent), h("span.dim", { style: { fontSize: "11.5px" } }, h("span", { translate: "no" }, this.ctx.WS.label(a.space)), " · ", STATUS_WORD[a.status])))
       : [h("div.dim", { style: { padding: "0 10px", fontSize: "12px" } }, "No hay agentes abiertos ahora.")]));
   }
   update() { if (!this.el.classList.contains("hidden")) this.paint(); }

@@ -8,17 +8,25 @@ import * as Settings from "./settings.js";
 import * as Plugins from "./plugins.js";
 import { registry } from "./plugins.js";
 import { openSettings } from "./settingsView.js";
+import { setLanguage, startTranslator, tr } from "./i18n.js";
 import { KitPanel } from "./panels/kit.js";
 import { ExplorerPanel } from "./panels/explorer.js";
 import { ServersPanel } from "./panels/servers.js";
 import { UsagePanel } from "./panels/usage.js";
 
-const api = window.mooser;
+// What the panels get: the bridge, with dialog titles and notifications in the chosen language.
+const bridge = window.mooser;
+const api = {
+  ...bridge,
+  dialog: { folder: (title) => bridge.dialog.folder(tr(title)), files: (title) => bridge.dialog.files(tr(title)) },
+  app: { ...bridge.app, notify: (n) => bridge.app.notify({ ...n, title: tr(n.title), body: tr(n.body) }) },
+};
 const $ = (id) => document.getElementById(id);
 const info = await api.app.info();
 W.mac = info.platform === "darwin"; W.home = info.home; window.mooserMac = W.mac;
 document.body.classList.toggle("mac", W.mac);
 await Settings.load();
+setLanguage(Settings.get().language);
 Settings.reloadCss();
 const set = () => Settings.get();
 
@@ -132,7 +140,7 @@ function renderSidebar() {
       oncontextmenu: (e) => { e.preventDefault(); spaceMenu(s, { x: e.clientX, y: e.clientY }); },
     },
     h("div.tile", { style: { background: s.color } }, WS.label(s).slice(0, 1).toUpperCase()),
-    rail ? null : h("div.grow.col", h("span.trunc", WS.label(s)), h("span.meta.trunc", `${s.tabs.length} ${s.tabs.length === 1 ? "pestaña" : "pestañas"}${i < 9 ? ` · Alt+${i + 1}` : ""}`)),
+    rail ? null : h("div.grow.col", h("span.trunc", { translate: "no" }, WS.label(s)), h("span.meta.trunc", `${s.tabs.length} ${s.tabs.length === 1 ? "pestaña" : "pestañas"}${i < 9 ? ` · Alt+${i + 1}` : ""}`)),
     st && st !== "idle" ? h(`span.dot.${st}`) : null);
   })));
   const list = WS.agents();
@@ -140,7 +148,7 @@ function renderSidebar() {
   sb.append(h("div.list", { style: { flex: "1 1 50%" } },
     list.length ? list.map((a) => h("div.agent", { title: `${a.agent} en ${WS.label(a.space)} — ${STATUS_WORD[a.status]}`, onclick: () => WS.focusPane(a.pane.id) },
       rail ? [h("div.tile", { style: { background: a.space.color } }, a.agent.slice(0, 1)), h(`span.dot.badge.${a.status}`)]
-        : [h(`span.dot.${a.status}`), h("div.grow.col", h("span.trunc", a.agent), h("span.sub.trunc", `${WS.label(a.space)} · `, h("span", { style: { color: STATUS_COLOR[a.status] } }, STATUS_WORD[a.status])))]))
+        : [h(`span.dot.${a.status}`), h("div.grow.col", h("span.trunc", a.agent), h("span.sub.trunc", h("span", { translate: "no" }, WS.label(a.space)), " · ", h("span", { style: { color: STATUS_COLOR[a.status] } }, STATUS_WORD[a.status])))]))
       : rail ? [] : [h("div.dim", { style: { padding: "4px 10px", fontSize: "12px" } }, "Abre Claude Code, Codex o Gemini en una pestaña y aparecerá aquí con su estado.")]));
   sb.append(h("div.foot",
     h("div.foot-row", { title: "Configuración (Ctrl+,)", onclick: () => openSettings(ctx) }, icon("cpu", 14), rail ? null : "Configuración")));
@@ -192,7 +200,7 @@ function renderTabbar() {
       onauxclick: (e) => { if (e.button === 1) WS.closeTab(t.id); },
     },
     st ? h(`span.dot.${st}`) : icon("terminal", 13),
-    h("span.trunc", WS.tabLabel(t, i)),
+    h("span.trunc", t.name ? { translate: "no" } : null, WS.tabLabel(t, i)),
     h("span.x", { title: "Cerrar pestaña", onclick: (e) => { e.stopPropagation(); WS.closeTab(t.id); } }, icon("x")));
   })));
   bar.append(iconButton("plus", "Nueva pestaña", (e) => (s ? newTabMenu(e.currentTarget) : pickSpace())));
@@ -362,6 +370,7 @@ Settings.onChange(() => render());
 
 WS.restore(await api.app.loadState());
 await Plugins.loadAll(ctx);
+startTranslator();
 applySizes(); renderPanel(); render();
 // The usage meter in the status bar reads the usage panel, even before that panel is opened.
 if (!panels.has("usage")) { const u = BUILTIN.find((p) => p.id === "usage").make(); u.mount(ctx); u.el.classList.add("hidden"); panelBody.append(u.el); panels.set("usage", u); }

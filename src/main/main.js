@@ -17,6 +17,9 @@ const config = require("./config");
 config.registerScheme();
 
 const isMac = process.platform === "darwin";
+// The few texts the main process shows itself (system dialogs), in the chosen language.
+const english = () => { const l = config.read().settings.language; return l === "en" || (l !== "es" && !app.getLocale().toLowerCase().startsWith("es")); };
+const say = (es, en) => (english() ? en : es);
 let win = null;
 
 function createWindow() {
@@ -110,11 +113,11 @@ handle("notify", ({ title, body, silent }) => {
   return true;
 });
 handle("dialog:folder", async (title) => {
-  const r = await dialog.showOpenDialog(win, { title: title || "Elige una carpeta", properties: ["openDirectory", "createDirectory"] });
+  const r = await dialog.showOpenDialog(win, { title: title || say("Elige una carpeta", "Choose a folder"), properties: ["openDirectory", "createDirectory"] });
   return r.canceled ? null : r.filePaths[0];
 });
 handle("dialog:files", async (title) => {
-  const r = await dialog.showOpenDialog(win, { title: title || "Elige archivos", properties: ["openFile", "multiSelections"] });
+  const r = await dialog.showOpenDialog(win, { title: title || say("Elige archivos", "Choose files"), properties: ["openFile", "multiSelections"] });
   return r.canceled ? [] : r.filePaths;
 });
 handle("shell:open", (p) => shell.openPath(p));
@@ -163,7 +166,7 @@ handle("config:get", () => ({ ...config.read(), dir: config.DIR, defaults: confi
 handle("config:set", (patch) => config.update(patch));
 handle("config:open", () => shell.openPath(config.DIR));
 handle("config:background", async () => {
-  const r = await dialog.showOpenDialog(win, { title: "Imagen de fondo", properties: ["openFile"], filters: [{ name: "Imágenes", extensions: ["jpg", "jpeg", "png", "webp", "gif"] }] });
+  const r = await dialog.showOpenDialog(win, { title: say("Imagen de fondo", "Background image"), properties: ["openFile"], filters: [{ name: say("Imágenes", "Images"), extensions: ["jpg", "jpeg", "png", "webp", "gif"] }] });
   return r.canceled ? null : config.importBackground(r.filePaths[0]);
 });
 handle("config:reload", () => { win?.webContents.reloadIgnoringCache(); return true; });
