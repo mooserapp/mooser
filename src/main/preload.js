@@ -24,4 +24,7 @@ contextBridge.exposeInMainWorld("mooser", {
     connectSpec: call("ssh:connectSpec"), transferSpec: call("ssh:transferSpec"),
   },
   usage: { claude: call("usage:claude") },
+  config: { get: call("config:get"), set: call("config:set"), open: call("config:open"), background: call("config:background"), reload: call("config:reload"), onChange: on("config:changed"),
+    installSkill: call("config:installSkill"), skillInstalled: call("config:skillInstalled") },
+  plugin: { exec: call("plugin:exec") },
 });

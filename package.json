@@ -35,6 +35,7 @@
     "files": [
       "src/**",
       "assets/**",
+      "docs/**",
       "node_modules/**",
       "package.json"
     ],

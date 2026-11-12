@@ -5,6 +5,7 @@ import { Terminal } from "../../../node_modules/@xterm/xterm/lib/xterm.mjs";
 import { FitAddon } from "../../../node_modules/@xterm/addon-fit/lib/addon-fit.mjs";
 import { WebLinksAddon } from "../../../node_modules/@xterm/addon-web-links/lib/addon-web-links.mjs";
 import { h, icon, iconButton, clear, STATUS_WORD } from "./ui.js";
+import * as Settings from "./settings.js";
 
 const api = window.mooser;
 const uid = (p) => `${p}${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
@@ -28,8 +29,10 @@ export const W = {
 
 // ---------- persistence ----------
 const strip = (n) => (n.type === "split" ? { ...n, a: strip(n.a), b: strip(n.b) } : { type: "pane", id: n.id, cwd: n.cwd, argv: n.argv, name: n.name, keep: n.keep });
+// Saved with each pane: its terminal's id, so a window reload finds the same terminal running.
+const persist = (n) => (n.type === "split" ? { ...n, a: persist(n.a), b: persist(n.b) } : { ...strip(n), termId: W.panes.get(n.id)?.termId ?? n.termId });
 export function serialize() {
-  return { active: W.active, spaces: W.spaces.map((s) => ({ ...s, tabs: s.tabs.map((t) => ({ ...t, root: strip(t.root) })) })) };
+  return { active: W.active, spaces: W.spaces.map((s) => ({ ...s, tabs: s.tabs.map((t) => ({ ...t, root: persist(t.root) })) })) };
 }
 let saveTimer = null;
 export function save() { clearTimeout(saveTimer); saveTimer = setTimeout(() => api.app.saveState(serialize()), 300); }
@@ -194,10 +197,8 @@ api.term.onStatus((info) => {
 function makePane(node) {
   let rt = W.panes.get(node.id);
   if (rt) return rt;
-  const term = new Terminal({
-    fontFamily: '"Cascadia Code", "SF Mono", Menlo, Consolas, monospace', fontSize: W.fontSize ?? 14, lineHeight: 1.15,
-    theme: XTERM_THEME, allowTransparency: true, cursorBlink: true, scrollback: 10000, macOptionIsMeta: false, allowProposedApi: true,
-  });
+  const term = new Terminal({ ...termOptions(), allowTransparency: true, macOptionIsMeta: false, allowProposedApi: true });
+  term.onSelectionChange(() => { if (Settings.get()?.terminal?.copyOnSelect && term.hasSelection()) navigator.clipboard.writeText(term.getSelection()); });
   const fit = new FitAddon();
   term.loadAddon(fit);
   term.loadAddon(new WebLinksAddon((_e, url) => api.shell.external(url)));
@@ -228,9 +229,10 @@ function makePane(node) {
 
   requestAnimationFrame(async () => {
     resize();
-    const info = await api.term.create({ cwd: node.cwd, argv: node.argv, env: node.env, name: node.name, cols: term.cols || 100, rows: term.rows || 30 });
+    const info = await api.term.create({ id: node.termId, cwd: node.cwd, argv: node.argv, env: node.env, name: node.name, cols: term.cols || 100, rows: term.rows || 30 });
+    if (info?.history) term.write(info.history);
     if (info?.error) { term.write(`\r\n\x1b[31m${info.error}\x1b[0m\r\n`); return; }
-    rt.termId = info.id; byTerm.set(info.id, node.id);
+    rt.termId = info.id; node.termId = info.id; byTerm.set(info.id, node.id); save();
     W.status.set(info.id, info);
     if (W.focusedPane === node.id) { api.term.focus(info.id); term.focus(); }
     paintHead(node.id);
@@ -300,6 +302,23 @@ function build(n, t) {
   });
   return box;
 }
+
+// Terminal options from settings (font, cursor, history) and the theme's accent for the cursor.
+function termOptions() {
+  const t = Settings.get()?.terminal ?? {}, accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || XTERM_THEME.cursor;
+  return {
+    fontFamily: t.fontFamily ? `"${t.fontFamily.replace(/"/g, "")}", "Cascadia Code", "SF Mono", Menlo, Consolas, monospace` : '"Cascadia Code", "SF Mono", Menlo, Consolas, monospace',
+    fontSize: t.fontSize ?? 14, lineHeight: t.lineHeight ?? 1.15, cursorStyle: t.cursorStyle ?? "block", cursorBlink: t.cursorBlink !== false,
+    scrollback: t.scrollback ?? 10000, theme: { ...XTERM_THEME, cursor: accent },
+  };
+}
+Settings.onChange(() => {
+  const o = termOptions();
+  for (const rt of W.panes.values()) {
+    Object.assign(rt.term.options, o);
+    try { rt.fit.fit(); if (rt.termId) api.term.resize(rt.termId, rt.term.cols, rt.term.rows); } catch { /* hidden */ }
+  }
+});
 
 export function setFontSize(px) {
   W.fontSize = Math.max(9, Math.min(28, px));

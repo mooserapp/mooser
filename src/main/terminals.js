@@ -19,7 +19,12 @@ const QUIET_MS = 1500;
 const all = new Map();
 let win = null, focusedId = null;
 
+let settings = () => ({});
+const HISTORY = 256 * 1024; // what a terminal keeps of its recent output, for a window reload
+
 function defaultShell() {
+  const own = settings()?.terminal;
+  if (own?.shell) return { file: which(own.shell), args: own.shellArgs ?? [] };
   if (process.platform === "win32") {
     // PowerShell 7 when it is there (also the Microsoft Store one, an app alias), else Windows PowerShell.
     const dirs = [...(process.env.PATH ?? "").split(path.delimiter), path.join(process.env.ProgramFiles ?? "C:\\Program Files", "PowerShell", "7")];
@@ -52,6 +57,8 @@ function setStatus(t, status) { if (t.status !== status) { t.status = status; pu
 
 function onOutput(t, data) {
   t.buffer += data;
+  t.history += data;
+  if (t.history.length > HISTORY * 1.25) t.history = t.history.slice(-HISTORY);
   if (!t.flushing) { t.flushing = true; setTimeout(() => { t.flushing = false; const b = t.buffer; t.buffer = ""; if (b) send("term:data", t.id, b); }, 8); }
 
   // The window title programs set (OSC 0/2): agents name themselves there.
@@ -82,18 +89,20 @@ setInterval(() => {
 
 module.exports = {
   attach(w) { win = w; },
+  configure(get) { settings = get; },
 
   create({ id, cwd, argv, name, env: extra, cols = 100, rows = 30 } = {}) {
-    if (id && all.has(id)) return module.exports.info(id);
+    // Already running (the window was reloaded): hand back its recent output to draw again.
+    if (id && all.has(id)) { const t = all.get(id); try { t.proc.resize(cols, rows); } catch { /* exited */ } return { ...module.exports.info(id), history: t.history }; }
     const sh = defaultShell();
     let dir = cwd && fs.existsSync(cwd) ? cwd : os.homedir();
     const file = argv?.length ? which(argv[0]) : sh.file, args = argv?.length ? argv.slice(1) : sh.args;
-    const env = { ...process.env, TERM: "xterm-256color", COLORTERM: "truecolor", TERM_PROGRAM: "Mooser", ...(extra ?? {}) };
+    const env = { ...process.env, TERM: "xterm-256color", COLORTERM: "truecolor", TERM_PROGRAM: "Mooser", MOOSER_HOME: require("./config").DIR, ...(extra ?? {}) };
     const proc = pty.spawn(file, args, { name: "xterm-256color", cols, rows, cwd: dir, env, useConpty: true });
     const t = {
       id: id ?? `t${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`, proc, cwd: dir, title: name || path.basename(file),
       agent: argv?.length ? AGENTS[path.basename(argv[0]).replace(/\.(exe|cmd)$/i, "")] ?? null : null,
-      status: "idle", lastWork: 0, tail: "", buffer: "", flushing: false, input: "", exited: false, lastInfo: "",
+      status: "idle", lastWork: 0, tail: "", buffer: "", history: "", flushing: false, input: "", exited: false, lastInfo: "",
     };
     all.set(t.id, t);
     proc.onData((d) => onOutput(t, d));

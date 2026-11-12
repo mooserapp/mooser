@@ -1,6 +1,7 @@
 // Uso de IA: your Claude plan's 5-hour session and week, a digital countdown to the session reset
 // with an optional alert (notification and chime), and the agents open now.
 import { h, icon, clear, toggle, chime, STATUS_WORD } from "../ui.js";
+import * as Settings from "../settings.js";
 
 const EVERY = 5 * 60 * 1000;
 const GREEN = "#7ed9b5";
@@ -27,7 +28,6 @@ export class UsagePanel {
 
   mount(ctx) {
     this.ctx = ctx;
-    this.alertOn = localStorage.getItem("mooser.usageAlert") !== "0";
     this.load();
     setInterval(() => this.load(), EVERY);
     setInterval(() => this.tick(), 1000);
@@ -49,7 +49,7 @@ export class UsagePanel {
     const reset = this.data?.five?.resets_at;
     if (reset && Date.now() >= new Date(reset).getTime() && this.alerted !== reset) {
       this.alerted = reset;
-      if (this.alertOn) { chime("done"); this.ctx.api.app.notify({ title: "Sesión de Claude restablecida", body: "Vuelves a tener el 100% disponible." }); }
+      if (Settings.get()?.alerts?.usageReset !== false) { chime("done"); this.ctx.api.app.notify({ title: "Sesión de Claude restablecida", body: "Vuelves a tener el 100% disponible." }); }
       setTimeout(() => this.load(), 20000);
     }
     if (!this.el.classList.contains("hidden") && this.clock && reset) this.clock.textContent = countdown(reset);
@@ -79,7 +79,7 @@ export class UsagePanel {
           : h("div.col", { style: { alignItems: "center", padding: "10px 0" } }, h("span", "Sin sesión en curso"), h("span.dim", { style: { fontSize: "11.5px" } }, "Empieza con tu próximo mensaje a Claude.")),
         h("div.row", { style: { padding: "8px 12px", borderRadius: "10px", background: this.alertOn ? `${GREEN}1f` : "var(--raised)" } },
           h("span.grow", { style: { fontSize: "12px" } }, "Avisarme con sonido al restablecerse"),
-          (() => { const t = toggle(this.alertOn, () => { this.alertOn = !this.alertOn; localStorage.setItem("mooser.usageAlert", this.alertOn ? "1" : "0"); this.paint(); }); if (this.alertOn) { t.style.background = GREEN; t.style.borderColor = GREEN; } return t; })())));
+          (() => { const t = toggle(this.alertOn, () => Settings.set({ alerts: { usageReset: !this.alertOn } }).then(() => this.paint())); if (this.alertOn) { t.style.background = GREEN; t.style.borderColor = GREEN; } return t; })())));
     }
     if (week) body.append(h("div.card",
       h("div.row", h("span.grow.muted", "Semana"), h("b", { style: { color: level(week.utilization ?? 0), fontSize: "12.5px" } }, `${Math.round(week.utilization ?? 0)}% usado`)),

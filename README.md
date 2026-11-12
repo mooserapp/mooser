@@ -74,6 +74,7 @@ Al cerrar Mooser se guardan tus espacios, pestañas y divisiones. Al abrirlo de 
 | Acción | Windows | macOS |
 |---|---|---|
 | Paleta de comandos | `Ctrl+Shift+P` | `⌘⇧P` |
+| Configuración | `Ctrl+,` | `⌘,` |
 | Nuevo espacio | `Ctrl+Shift+N` | `⌘⇧N` |
 | Nueva pestaña | `Ctrl+Shift+T` | `⌘T` |
 | Dividir a la derecha | `Ctrl+Shift+D` | `⌘D` |
@@ -90,11 +91,42 @@ Al cerrar Mooser se guardan tus espacios, pestañas y divisiones. Al abrirlo de 
 
 `Ctrl` sin `Shift` llega siempre al programa de la terminal (Ctrl+C, Ctrl+R…).
 
+## Configuración
+
+Pulsa **Configuración** abajo en la barra lateral (o `Ctrl+,` / `⌘,`). Ahí está todo:
+
+- **Apariencia**: el tema (Cáustica, Medianoche, Aurora, Ámbar, Coral), el color de acento, el fondo (el del tema, un color liso o tu propia imagen), la opacidad y el desenfoque del cristal, las esquinas, la separación, el tamaño del texto y las animaciones.
+- **Terminal**: fuente, tamaño, interlineado, cursor, historial, la shell y copiar al seleccionar.
+- **Avisos**: sonido, notificaciones del sistema y el aviso de restablecimiento de Claude.
+- **Agentes**: los que aparecen en el botón **+** de la barra de pestañas, con su comando.
+- **Personalizar**: tu carpeta, tus estilos, tus plugins y el skill para Claude Code.
+
+Todo se guarda en `~/.mooser/settings.json`, un archivo que también puedes editar a mano.
+
+## Personaliza Mooser con Claude
+
+Todo lo que hace tuyo a Mooser vive como archivos en `~/.mooser` (en Windows, `C:\Users\<tú>\.mooser`), y Mooser aplica cada cambio al guardarlo:
+
+| Archivo | Para |
+|---|---|
+| `settings.json` | tema, colores, tamaños, terminal, avisos, agentes, plugins |
+| `custom.css` | cualquier estilo o cambio de distribución |
+| `plugins/<nombre>/main.js` | funciones nuevas: comandos, secciones del panel lateral, elementos de la barra de estado, reacciones a los agentes |
+| `AGENTS.md` | la guía completa para agentes (la escribe Mooser) |
+
+Así puedes pedirle a Claude cosas como *"pon el tema Ámbar con el acento coral"*, *"mueve el panel lateral a la izquierda"*, *"añade un panel con mis pull requests"* o *"un comando que lance los tests del proyecto"*, y lo verás aplicado al momento:
+
+- **Personalizar con Claude** (abajo en la barra lateral) abre tu carpeta de Mooser como espacio con Claude Code ya dentro.
+- O desde cualquier terminal: en **Configuración, Personalizar** instala el skill **mooser** y cualquier sesión de Claude Code sabrá cómo cambiar Mooser.
+
+Los plugins son tu propio código y se ejecutan con los permisos de la app (pueden ejecutar programas). Para cambios más profundos en el código de Mooser, mira [AGENTS.md](AGENTS.md) y usa `npm run dev`: al guardar, la ventana se recarga y las terminales siguen vivas.
+
 ## Privacidad y seguridad
 
 - **Contraseñas de servidores**: se guardan solo cifradas con el almacén seguro del sistema (DPAPI en Windows, el Llavero en macOS) mediante `safeStorage` de Electron. Cuando ssh pide la contraseña, un pequeño ayudante se la pide a Mooser por un canal local con un código de un solo uso; nunca queda en un archivo ni en una variable de entorno en claro.
 - **Uso de Claude**: Mooser lee la sesión que Claude Code ya guarda en tu equipo y la envía solo a `api.anthropic.com` para consultar tu uso. No la guarda ni la renueva.
 - **Kit de IA**: cambia solo la configuración de Claude Code en `~/.claude` (o a través de su propia CLI). Desactivar un skill o agente tuyo lo mueve a `~/.claude/skills-off` o `~/.claude/agents-off`; activarlo lo devuelve.
+- **Skill de Claude Code**: solo se instala si pulsas **Instalar skill**; escribe `~/.claude/skills/mooser/SKILL.md`.
 - Sin telemetría. Mooser no envía nada a ningún otro sitio.
 
 ## Cómo está hecho

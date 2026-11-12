@@ -12,6 +12,9 @@ const kit = require("./kit");
 const ssh = require("./ssh");
 const usage = require("./usage");
 const store = require("./store");
+const config = require("./config");
+
+config.registerScheme();
 
 const isMac = process.platform === "darwin";
 let win = null;
@@ -56,15 +59,30 @@ function createWindow() {
   // Development aid: MOOSER_SHOT=<file.png> saves a picture of the window a few seconds after start
   // and prints the page's console errors.
   if (process.env.MOOSER_SHOT) {
+    win.webContents.on("render-process-gone", (_e, d) => console.log("[gone]", JSON.stringify(d)));
+    win.webContents.on("did-start-navigation", (d) => console.log("[nav]", d.url));
     win.webContents.on("console-message", (e) => { console.log(`[page ${e.level}] ${e.message} (${e.sourceId}:${e.lineNumber})`); });
-    if (process.env.MOOSER_JS) setTimeout(() => win.webContents.executeJavaScript(process.env.MOOSER_JS).catch((e) => console.log("js failed", e)), 3000);
+    if (process.env.MOOSER_JS) setTimeout(() => win.webContents.executeJavaScript(process.env.MOOSER_JS).catch((e) => console.log("js failed", e)), Number(process.env.MOOSER_JS_AT || 3000));
     setTimeout(async () => { const img = await win.webContents.capturePage(); fs.writeFileSync(process.env.MOOSER_SHOT, img.toPNG()); console.log("shot saved"); if (process.env.MOOSER_QUIT) app.quit(); }, Number(process.env.MOOSER_WAIT || 5000));
   }
 }
 
 app.setName("Mooser");
+// One Mooser at a time: opening it again brings the open window forward.
+if (!process.env.MOOSER_SHOT && !app.requestSingleInstanceLock()) app.quit();
+app.on("second-instance", () => { if (win) { if (win.isMinimized()) win.restore(); win.focus(); } });
+
 app.whenReady().then(() => {
   nativeTheme.themeSource = "dark";
+  config.ensure();
+  config.serve();
+  terminals.configure(() => config.read().settings);
+  config.watch((changed) => win?.webContents.send("config:changed", changed));
+  // npm run dev: saving the app's own page code reloads the window (terminals keep running).
+  if (process.argv.includes("--dev")) {
+    let t = null;
+    fs.watch(path.join(__dirname, "..", "renderer"), { recursive: true }, () => { clearTimeout(t); t = setTimeout(() => win?.webContents.reloadIgnoringCache(), 200); });
+  }
   createWindow();
   app.on("activate", () => { if (BrowserWindow.getAllWindows().length === 0) createWindow(); });
 });
@@ -138,3 +156,33 @@ handle("ssh:transferSpec", (from, paths, to, dir) => ssh.transferSpec(from, path
 
 // Plan usage
 handle("usage:claude", () => usage.claude());
+
+// Your Mooser folder: settings, custom.css, plugins
+handle("config:get", () => ({ ...config.read(), dir: config.DIR, defaults: config.DEFAULTS, plugins: config.plugins() }));
+handle("config:set", (patch) => config.update(patch));
+handle("config:open", () => shell.openPath(config.DIR));
+handle("config:background", async () => {
+  const r = await dialog.showOpenDialog(win, { title: "Imagen de fondo", properties: ["openFile"], filters: [{ name: "Imágenes", extensions: ["jpg", "jpeg", "png", "webp", "gif"] }] });
+  return r.canceled ? null : config.importBackground(r.filePaths[0]);
+});
+handle("config:reload", () => { win?.webContents.reloadIgnoringCache(); return true; });
+// The "mooser" skill for Claude Code: teaches any Claude Code session how to change Mooser.
+const SKILL_DIR = path.join(os.homedir(), ".claude", "skills", "mooser");
+handle("config:skillInstalled", () => fs.existsSync(path.join(SKILL_DIR, "SKILL.md")));
+handle("config:installSkill", () => {
+  fs.mkdirSync(SKILL_DIR, { recursive: true });
+  const guide = fs.readFileSync(path.join(__dirname, "..", "..", "docs", "CUSTOMIZE.md"), "utf8").replace(/^#.*\r?\n/, "");
+  fs.writeFileSync(path.join(SKILL_DIR, "SKILL.md"), `---
+name: mooser
+description: "Customize the Mooser app (terminals and AI agents workspace): its theme, colors, layout, settings, styles and features via plugins. Use when the user asks to change how Mooser looks or works, add a Mooser feature, panel, command or status item, or when running inside Mooser (TERM_PROGRAM=Mooser)."
+---
+
+# Mooser
+${guide}`);
+  return { ok: true };
+});
+// Plugins run a program and get its output (plugins are your own trusted code).
+handle("plugin:exec", (cmd, args = [], opts = {}) => new Promise((resolve) => {
+  require("node:child_process").execFile(cmd, args, { cwd: opts.cwd || os.homedir(), timeout: Math.min(opts.timeout ?? 30000, 600000), windowsHide: true, shell: process.platform === "win32" && !/\.exe$/i.test(cmd) },
+    (err, stdout, stderr) => resolve({ code: err ? (typeof err.code === "number" ? err.code : 1) : 0, stdout: String(stdout), stderr: String(stderr) }));
+}));
