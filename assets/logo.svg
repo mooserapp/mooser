@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1b3a63"/>
+      <stop offset="1" stop-color="#0b1a30"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".22"/>
+      <stop offset=".5" stop-color="#ffffff" stop-opacity=".04"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="moose" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c9d4ff"/>
+      <stop offset=".55" stop-color="#a9b8ff"/>
+      <stop offset="1" stop-color="#6fd6e0"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#tile)"/>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#glass)"/>
+  <rect x="17.5" y="17.5" width="477" height="477" rx="110.5" fill="none" stroke="#ffffff" stroke-opacity=".22" stroke-width="3"/>
+  <!-- antlers: two palmate fans, each a broad palm with three tines -->
+  <path fill="url(#moose)" d="M214 214c-34-4-66-18-86-44-12-16-18-36-16-56l22 24 4-38 22 30 10-40 18 36 16-30 6 44c4 26 10 48 4 74z"/>
+  <path fill="url(#moose)" d="M298 214c34-4 66-18 86-44 12-16 18-36 16-56l-22 24-4-38-22 30-10-40-18 36-16-30-6 44c-4 26-10 48-4 74z"/>
+  <!-- head: long brow, heavy muzzle, the bell under the chin -->
+  <path fill="url(#moose)" d="M256 196c30 0 52 14 58 40l6 70c2 26 8 44 4 64-6 30-34 50-68 50s-62-20-68-50c-4-20 2-38 4-64l6-70c6-26 28-40 58-40z"/>
+  <path fill="url(#moose)" d="M246 418c4 22 8 36 10 44 2-8 6-22 10-44z"/>
+  <!-- ears -->
+  <path fill="url(#moose)" d="M200 236c-22-2-40 6-50 20 18 8 36 8 52 0z"/>
+  <path fill="url(#moose)" d="M312 236c22-2 40 6 50 20-18 8-36 8-52 0z"/>
+  <!-- eyes and nostrils, cut from the tile color -->
+  <circle cx="226" cy="262" r="9" fill="#0b1a30"/>
+  <circle cx="286" cy="262" r="9" fill="#0b1a30"/>
+  <ellipse cx="238" cy="382" rx="9" ry="6" fill="#0b1a30" opacity=".7"/>
+  <ellipse cx="274" cy="382" rx="9" ry="6" fill="#0b1a30" opacity=".7"/>
+  <!-- the prompt: a terminal caret on the brow -->
+  <path d="M238 214l14 10-14 10" fill="none" stroke="#0b1a30" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M258 236h18" stroke="#0b1a30" stroke-width="7" stroke-linecap="round"/>
+</svg>

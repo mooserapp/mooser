@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:">
+  <title>Mooser</title>
+  <link rel="stylesheet" href="../../node_modules/@xterm/xterm/css/xterm.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar" class="glass"></aside>
+    <div id="grip-left" class="grip"><span><i></i><i></i><i></i></span></div>
+    <main id="work">
+      <header id="tabbar" class="glass"></header>
+      <section id="body">
+        <div id="tabhost"></div>
+        <div id="grip-right" class="grip"><span><i></i><i></i><i></i></span></div>
+        <aside id="panel" class="glass"></aside>
+      </section>
+      <footer id="status" class="glass"></footer>
+    </main>
+  </div>
+  <div class="toast-host" id="toasts"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
