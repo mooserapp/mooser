@@ -92,7 +92,7 @@ Descarga el de tu sistema en la página de **[Releases](../../releases)**:
 Necesitas [Node.js](https://nodejs.org) 20 o más reciente y Git.
 
 ```sh
-git clone https://github.com/<tu-usuario>/mooser.git
+git clone https://github.com/davechbga/mooser.git
 cd mooser
 npm install
 npm start

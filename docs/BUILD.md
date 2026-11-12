@@ -27,7 +27,7 @@ Antes de cada versión, sube el número en `package.json` (`"version": "0.2.0"`)
 ### 2. Descarga el código
 
 ```sh
-gh repo clone <tu-usuario>/mooser
+gh repo clone davechbga/mooser
 cd mooser
 npm ci
 ```

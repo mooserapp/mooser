@@ -69,7 +69,7 @@ Get the installer for your system from **[Releases](../../releases)**:
 From source (Node.js 20+ and Git):
 
 ```sh
-git clone https://github.com/<your-user>/mooser.git
+git clone https://github.com/davechbga/mooser.git
 cd mooser
 npm install
 npm start
