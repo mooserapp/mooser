@@ -105,7 +105,12 @@ Get the installer for your system from **[Releases](../../releases)**:
 | macOS on Intel | `Mooser-x.y.z-mac-x64.dmg` |
 
 - **Windows**: run the installer, pick the language and folder. If SmartScreen warns, choose **More info**, then **Run anyway** (the installer isn't signed yet).
-- **macOS**: open the `.dmg` and drag Mooser to **Applications**. The app isn't signed by Apple yet, so macOS won't open it the first time: go to **System Settings, Privacy & Security** and click **Open Anyway** (on macOS 14 or earlier, right-click and **Open**). You can also clear the quarantine from Terminal:
+- **macOS**: open the `.dmg` and drag Mooser to **Applications**. The first time, macOS says it *could not verify that Mooser is free of malware*. That's expected for an app Apple hasn't notarized yet:
+  1. In that dialog, click **Done**, not "Move to Trash".
+  2. Open **System Settings → Privacy & Security**, scroll to *Security* and click **Open Anyway** next to "Mooser was blocked". Confirm with your password (on macOS 14 or earlier, right-click and **Open** is enough).
+  3. From then on it opens normally.
+
+  Or, in one go, in Terminal:
   ```sh
   xattr -dr com.apple.quarantine /Applications/Mooser.app
   ```
