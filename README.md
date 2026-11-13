@@ -14,7 +14,7 @@
   Windows · macOS (Apple Silicon e Intel) · Español / English · Licencia MIT
 </p>
 
-<p align="center"><a href="README.en.md">Read in English</a></p>
+<p align="center"><a href="https://mooserapp.github.io/mooser/"><b>mooserapp.github.io/mooser</b></a> · <a href="README.en.md">Read in English</a></p>
 
 <p align="center">
   <img src="docs/images/windows/workspace.png" alt="Mooser con dos terminales, un agente trabajando y el uso de Claude" width="900">
@@ -137,7 +137,7 @@ Descarga el de tu sistema en la página de **[Releases](../../releases)**:
 Necesitas [Node.js](https://nodejs.org) 20 o más reciente y Git.
 
 ```sh
-git clone https://github.com/davechbga/mooser.git
+git clone https://github.com/mooserapp/mooser.git
 cd mooser
 npm install
 npm start

@@ -18,7 +18,7 @@ Instala las herramientas de línea de comandos de Xcode (`xcode-select --install
 ### 2. Descarga el código y pruébalo
 
 ```sh
-git clone https://github.com/davechbga/mooser.git
+git clone https://github.com/mooserapp/mooser.git
 cd mooser
 npm ci
 npm start

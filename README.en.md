@@ -14,7 +14,7 @@
   Windows · macOS (Apple Silicon and Intel) · English / Español · MIT license
 </p>
 
-<p align="center"><a href="README.md">Leer en español</a></p>
+<p align="center"><a href="https://mooserapp.github.io/mooser/"><b>mooserapp.github.io/mooser</b></a> · <a href="README.md">Leer en español</a></p>
 
 <p align="center">
   <img src="docs/images/windows/workspace-en.png" alt="Mooser with two terminals, a working agent and Claude usage" width="900">
@@ -118,7 +118,7 @@ Get the installer for your system from **[Releases](../../releases)**:
 From source (Node.js 20+ and Git):
 
 ```sh
-git clone https://github.com/davechbga/mooser.git
+git clone https://github.com/mooserapp/mooser.git
 cd mooser
 npm install
 npm start

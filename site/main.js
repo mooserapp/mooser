@@ -98,7 +98,7 @@ function paintRelease() {
   }
 }
 paintRelease();
-fetch("https://api.github.com/repos/davechbga/mooser/releases/latest")
+fetch("https://api.github.com/repos/mooserapp/mooser/releases/latest")
   .then((r) => (r.ok ? r.json() : null))
   .then((r) => { if (r?.assets) { release = r; paintRelease(); } })
   .catch(() => { /* offline or rate-limited: the links keep pointing at the releases page */ });
