@@ -34,7 +34,6 @@
 - [Idioma](#idioma)
 - [Privacidad y seguridad](#privacidad-y-seguridad)
 - [Desarrollo](#desarrollo)
-- [Crear los instaladores](#crear-los-instaladores)
 - [Preguntas frecuentes](#preguntas-frecuentes)
 - [Licencia](#licencia)
 
@@ -87,14 +86,6 @@ Mooser es una app de escritorio para trabajar con varios agentes de código a la
     <td align="center">Explorador</td>
     <td align="center">Configuración: temas, terminal, avisos</td>
   </tr>
-  <tr>
-    <td><img src="docs/images/windows/welcome.png" alt="La bienvenida"></td>
-    <td><img src="docs/images/windows/workspace-en.png" alt="Mooser en inglés"></td>
-  </tr>
-  <tr>
-    <td align="center">Bienvenida</td>
-    <td align="center">En inglés</td>
-  </tr>
 </table>
 
 ### macOS
@@ -116,17 +107,7 @@ Mooser es una app de escritorio para trabajar con varios agentes de código a la
     <td align="center">Explorador</td>
     <td align="center">Configuración: temas, terminal, avisos</td>
   </tr>
-  <tr>
-    <td><img src="docs/images/macos/welcome.png" alt="La bienvenida"></td>
-    <td><img src="docs/images/macos/workspace-en.png" alt="Mooser en inglés"></td>
-  </tr>
-  <tr>
-    <td align="center">Bienvenida</td>
-    <td align="center">En inglés</td>
-  </tr>
 </table>
-
-Las capturas se generan con `npm run screenshots` (en `docs/images/<sistema>/`).
 
 ## Descargar e instalar
 
@@ -141,7 +122,7 @@ Descarga el de tu sistema en la página de **[Releases](../../releases)**:
 | macOS con Intel | `Mooser-x.y.z-mac-x64.dmg` |
 
 - **Windows**: abre el instalador, elige el idioma y la carpeta, y listo. Si Windows SmartScreen avisa, pulsa **Más información** y luego **Ejecutar de todas formas** (el instalador aún no está firmado).
-- **macOS**: abre el `.dmg` y arrastra Mooser a **Aplicaciones**. Si la app no está firmada, la primera vez macOS no la deja abrir: ve a **Ajustes del Sistema, Privacidad y seguridad** y pulsa **Abrir igualmente** (en macOS 14 o anterior basta con clic derecho y **Abrir**). Si macOS dice que "está dañada", ejecuta una vez en la Terminal:
+- **macOS**: abre el `.dmg` y arrastra Mooser a **Aplicaciones**. La app aún no está firmada por Apple, así que la primera vez macOS no la deja abrir: ve a **Ajustes del Sistema, Privacidad y seguridad** y pulsa **Abrir igualmente** (en macOS 14 o anterior, clic derecho y **Abrir**). También puedes quitarle la cuarentena desde la Terminal:
   ```sh
   xattr -dr com.apple.quarantine /Applications/Mooser.app
   ```
@@ -226,29 +207,7 @@ npm install
 npm run dev     # con DevTools; al guardar algo en src/renderer la ventana se recarga
 ```
 
-| Parte | Dónde |
-|---|---|
-| Ventana e IPC | `src/main/main.js`, `src/main/preload.js` |
-| Terminales y detección de agentes | `src/main/terminals.js` ([node-pty](https://github.com/microsoft/node-pty)) |
-| Configuración del usuario (`~/.mooser`) | `src/main/config.js` |
-| Kit de IA, archivos, SSH, uso de Claude | `src/main/kit.js`, `files.js`, `ssh.js`, `usage.js` |
-| Interfaz | `src/renderer/` (JavaScript y CSS sin framework, [xterm.js](https://xtermjs.org) para las terminales) |
-| Idiomas | `src/renderer/js/i18n.js` |
-| Logo e iconos | `assets/logo.svg`; `npm run icons` genera `build/icon.ico`, `build/icon.icns` y `assets/icon.png` |
-
-La guía para trabajar en el código está en [AGENTS.md](AGENTS.md).
-
-## Crear los instaladores
-
-Cada instalador se genera en su propio sistema, o en GitHub para los dos a la vez. Los pasos completos, incluida la firma y notarización para macOS, están en **[docs/BUILD.md](docs/BUILD.md)**. En resumen:
-
-```sh
-npm ci
-npm run dist:win   # en Windows → dist/Mooser-Setup-x.y.z-x64.exe
-CSC_IDENTITY_AUTO_DISCOVERY=false npm run dist:mac   # en un Mac  → dist/Mooser-x.y.z-mac-arm64.dmg y …-x64.dmg
-```
-
-O publica una versión desde GitHub: `git tag v0.2.0 && git push --tags` construye los instaladores de Windows y macOS y los adjunta a un borrador de Release.
+La estructura del código y las reglas para cambiarlo están en [AGENTS.md](AGENTS.md); cómo crear los instaladores de Windows y macOS, en [docs/BUILD.md](docs/BUILD.md).
 
 ## Preguntas frecuentes
 

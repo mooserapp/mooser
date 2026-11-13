@@ -5,40 +5,26 @@ Mooser se empaqueta con [electron-builder](https://www.electron.build). Cada ins
 | Sistema | Comando | Resultado en `dist/` |
 |---|---|---|
 | Windows | `npm run dist:win` | `Mooser-Setup-x.y.z-x64.exe` (instalador en español e inglés) |
-| macOS | `npm run dist:mac` | `Mooser-x.y.z-mac-arm64.dmg`, `Mooser-x.y.z-mac-x64.dmg` y sus `.zip` |
+| macOS | `CSC_IDENTITY_AUTO_DISCOVERY=false npm run dist:mac` | `Mooser-x.y.z-mac-arm64.dmg`, `Mooser-x.y.z-mac-x64.dmg` y sus `.zip` |
 
 Antes de cada versión, sube el número en `package.json` (`"version": "0.2.0"`).
 
-## En tu MacBook
+## En macOS
 
 ### 1. Prepara el Mac (una sola vez)
 
-1. Instala las herramientas de línea de comandos de Xcode (traen Git):
-   ```sh
-   xcode-select --install
-   ```
-2. Instala Node.js 20 o más reciente: desde [nodejs.org](https://nodejs.org) o con Homebrew (`brew install node`).
-3. Inicia sesión en GitHub para poder clonar el repositorio privado. Con la CLI de GitHub:
-   ```sh
-   brew install gh
-   gh auth login
-   ```
+Instala las herramientas de línea de comandos de Xcode (`xcode-select --install`) y Node.js 20 o más reciente ([nodejs.org](https://nodejs.org) o `brew install node`).
 
-### 2. Descarga el código
+### 2. Descarga el código y pruébalo
 
 ```sh
-gh repo clone davechbga/mooser
+git clone https://github.com/davechbga/mooser.git
 cd mooser
 npm ci
-```
-
-### 3. Pruébalo
-
-```sh
 npm start
 ```
 
-### 4. Genera los instaladores
+### 3. Genera los instaladores
 
 ```sh
 CSC_IDENTITY_AUTO_DISCOVERY=false npm run dist:mac
@@ -52,7 +38,7 @@ CSC_IDENTITY_AUTO_DISCOVERY=false npm run dist:mac
 
 Ábrelos para probar la instalación: arrastra Mooser a **Aplicaciones**.
 
-### 5. Firma y notarización (opcional, recomendado para publicar)
+### 4. Firma y notarización (opcional, recomendado para publicar)
 
 Sin firmar con Developer ID, macOS avisa al abrir la app y quien la descargue tiene que abrirla desde **Ajustes del Sistema, Privacidad y seguridad, Abrir igualmente**, o usar `xattr -dr com.apple.quarantine /Applications/Mooser.app`. Para que se abra sin avisos necesitas una cuenta de [Apple Developer](https://developer.apple.com/programs/) (99 USD al año):
 
@@ -95,9 +81,7 @@ Para firmar y notarizar macOS en GitHub, añade estos secretos en **Settings, Se
 |---|---|
 | `MAC_CERT_P12_BASE64` | tu certificado Developer ID exportado del Llavero como `.p12`, en base64 (`base64 -i cert.p12 \| pbcopy`) |
 | `MAC_CERT_PASSWORD` | la contraseña con que exportaste el `.p12` |
-| `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID` | como en el paso 5 de arriba |
-
-Mientras el repositorio sea privado, solo quien tenga acceso puede descargar los instaladores de Releases. Al hacerlo público, cualquiera podrá.
+| `APPLE_ID`, `APPLE_APP_SPECIFIC_PASSWORD`, `APPLE_TEAM_ID` | como en el paso 4 de arriba |
 
 ## Si las terminales no arrancan en macOS
 

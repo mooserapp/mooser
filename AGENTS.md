@@ -36,9 +36,6 @@ hands back the terminal's recent output when the page asks for it again.
 
 ## Rules
 
-- Commits: author `David Chiriboga <77027228+davechbga@users.noreply.github.com>`, and **no**
-  `Co-Authored-By` lines or any Claude/AI attribution in commits, PRs, releases or docs.
-- Current state, pending work and the owner's preferences: `docs/HANDOFF.md`.
 - Every new UI string gets its English in `src/renderer/js/i18n.js`; the person's own content goes in
   elements with `translate="no"`.
 - The page has no Node. A new system ability is an IPC handler in `main.js` plus its line in

@@ -94,8 +94,6 @@ Mooser is a desktop app for working with several coding agents at once (Claude C
   </tr>
 </table>
 
-Screenshots are made with `npm run screenshots` (into `docs/images/<system>/`).
-
 ## Download and install
 
 Get the installer for your system from **[Releases](../../releases)**:
@@ -107,7 +105,7 @@ Get the installer for your system from **[Releases](../../releases)**:
 | macOS on Intel | `Mooser-x.y.z-mac-x64.dmg` |
 
 - **Windows**: run the installer, pick the language and folder. If SmartScreen warns, choose **More info**, then **Run anyway** (the installer isn't signed yet).
-- **macOS**: open the `.dmg` and drag Mooser to **Applications**. If the app isn't signed, macOS won't open it the first time: go to **System Settings, Privacy & Security** and click **Open Anyway** (on macOS 14 or earlier, right-click and **Open** is enough). If macOS says it "is damaged", run once in Terminal:
+- **macOS**: open the `.dmg` and drag Mooser to **Applications**. The app isn't signed by Apple yet, so macOS won't open it the first time: go to **System Settings, Privacy & Security** and click **Open Anyway** (on macOS 14 or earlier, right-click and **Open**). You can also clear the quarantine from Terminal:
   ```sh
   xattr -dr com.apple.quarantine /Applications/Mooser.app
   ```
@@ -151,9 +149,14 @@ Optional: [Claude Code](https://docs.claude.com/claude-code) for the AI kit and 
 - Claude usage reads the session Claude Code already keeps and sends it only to `api.anthropic.com`; it is never stored or refreshed.
 - No telemetry.
 
-## Building
+## Development
 
-See **[docs/BUILD.md](docs/BUILD.md)**: `npm run dist:win` on Windows, `npm run dist:mac` on a Mac, or push a `v*` tag to build both on GitHub.
+```sh
+npm install
+npm run dev     # with DevTools; saving a file in src/renderer reloads the window
+```
+
+The code layout and the rules for changing it are in [AGENTS.md](AGENTS.md); building the Windows and macOS installers, in [docs/BUILD.md](docs/BUILD.md).
 
 ## License
 

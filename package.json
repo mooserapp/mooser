@@ -38,7 +38,7 @@
     "files": [
       "src/**",
       "assets/**",
-      "docs/**",
+      "docs/CUSTOMIZE.md",
       "node_modules/**",
       "package.json"
     ],
