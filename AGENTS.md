@@ -47,5 +47,6 @@ hands back the terminal's recent output when the page asks for it again.
 - UI text is written in Spanish (sentence case) and translated to English by `i18n.js`.
 - Check a change by running the app. `MOOSER_SHOT=<file.png> MOOSER_QUIT=1 npx electron .` saves a
   picture of the window after 5 s (`MOOSER_WAIT` ms) and prints the page's console;
-  `MOOSER_JS="..."` runs code in the page first (at `MOOSER_JS_AT` ms). Close other Mooser windows
+  `MOOSER_JS="..."` runs code in the page first (at `MOOSER_JS_AT` ms); `MOOSER_CLAUDE_DIR` points the AI kit at
+  another Claude Code folder. Close other Mooser windows
   first: they hold the data folder.

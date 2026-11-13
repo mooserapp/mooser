@@ -25,11 +25,14 @@ function jpeg(from, to, width, crop) {
 
 const SHOTS = "docs/images/macos";
 jpeg(`${SHOTS}/workspace.png`, "workspace.jpg", 1800); // link previews
-// [x, y, width, height] of the side panel or the Settings window.
-jpeg(`${SHOTS}/usage.png`, "usage.jpg", 820, [2054, 134, 820, 1000]);
-jpeg(`${SHOTS}/workspace.png`, "kit.jpg", 820, [2054, 134, 820, 1300]);
-jpeg(`${SHOTS}/explorer.png`, "explorer.jpg", 820, [2054, 134, 820, 1300]);
-jpeg(`${SHOTS}/settings.png`, "settings.jpg", 1400, [540, 205, 1800, 1280]);
+// [x, y, width, height] of the side panel, or of the Settings window below its title bar (which
+// shows the screenshot's temporary folder). Each in Spanish and English.
+for (const sfx of ["", "-en"]) {
+  jpeg(`${SHOTS}/usage${sfx}.png`, `usage${sfx}.jpg`, 820, [2054, 134, 820, 1000]);
+  jpeg(`${SHOTS}/workspace${sfx}.png`, `kit${sfx}.jpg`, 820, [2054, 134, 820, 1300]);
+  jpeg(`${SHOTS}/explorer${sfx}.png`, `explorer${sfx}.jpg`, 820, [2054, 134, 820, 1300]);
+  jpeg(`${SHOTS}/settings${sfx}.png`, `settings${sfx}.jpg`, 1400, [540, 285, 1800, 1200]);
+}
 jpeg("assets/background.jpg", "background.jpg", 1920);
 fs.copyFileSync(path.join(ROOT, "assets", "icon.png"), path.join(OUT, "icon.png"));
 console.log("site/img/icon.png");

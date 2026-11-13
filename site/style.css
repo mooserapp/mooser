@@ -223,11 +223,42 @@ h3 { font-weight: 600; font-size: 19px; }
 .day li.working b, .day li.blocked b, .day li.done b { color: var(--s); }
 
 /* Make it yours. */
-.yours { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
+.yours { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 56px; align-items: center; margin-top: 8px; }
 .tree { margin: 30px 0 0; padding: 22px 24px; border-radius: 16px; background: rgba(4, 10, 20, .45); border: 1px solid var(--line); font: 14px/1.85 var(--mono); color: #d5e1ec; overflow-x: auto; }
 .tree b { font-weight: 500; color: var(--accent); }
 .tree .c { color: var(--dim); }
 .yours img { border-radius: 16px; border: 1px solid var(--line-2); box-shadow: 0 30px 80px rgba(2, 8, 20, .55); }
+
+/* Asking your agent: what you say, what it does, what you get. */
+.ask { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 56px; align-items: center; margin-top: 90px; padding-top: 70px; border-top: 1px solid var(--line); }
+.ask-text h3 { font: 400 clamp(28px, 3vw, 40px)/1.1 var(--display); font-variation-settings: "SOFT" 100, "opsz" 96; }
+.ask-text p { margin-top: 18px; color: var(--muted); }
+.ask-text code { font: .86em var(--mono); padding: 2px 6px; border-radius: 6px; background: var(--glass-2); border: 1px solid var(--line); color: var(--fg); }
+.prompts { list-style: none; margin: 26px 0 0; padding: 0; display: grid; gap: 10px; }
+.prompts li { padding: 11px 16px; border-radius: 12px 12px 12px 4px; background: var(--glass-2); border: 1px solid var(--line); color: var(--fg); font-size: 15px; width: fit-content; max-width: 100%; }
+.ask-demo { position: relative; margin: 0; padding-bottom: 190px; }
+.ask-demo figcaption { font-size: 14px; color: var(--dim); margin-bottom: 14px; }
+.ask-term { width: 82%; border-radius: 16px; overflow: hidden; background: rgba(15, 34, 54, .85); border: 1px solid var(--line-2); box-shadow: 0 30px 80px rgba(2, 8, 20, .5); font-size: 13px; }
+.ask-term pre { margin: 0; padding: 14px 16px 18px; font: 12.5px/1.6 var(--mono); color: #d5e1ec; white-space: pre; overflow-x: auto; }
+.ask-term .m-head { color: #dce8f2; }
+.branches {
+  position: absolute; right: 0; bottom: 0; width: 58%; padding: 12px; border-radius: 16px;
+  background: rgba(14, 31, 58, .9); border: 1px solid var(--line-2); box-shadow: 0 30px 80px rgba(2, 8, 20, .65), 0 0 60px rgba(169, 184, 255, .12);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); font-size: 13px;
+}
+.b-dock { display: flex; align-items: center; gap: 12px; padding: 5px 6px; border-radius: 11px; border: 1px solid var(--line); color: var(--muted); }
+.b-dock .i { width: 15px; height: 15px; }
+.b-on { display: flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 8px; background: color-mix(in srgb, var(--accent) 22%, transparent); color: var(--fg); font-weight: 500; }
+.b-title { display: flex; align-items: baseline; gap: 8px; padding: 12px 6px 6px; font-weight: 600; }
+.b-title small { font-weight: 400; color: var(--dim); }
+.b-row { display: grid; grid-template-columns: 1fr auto; gap: 1px 10px; padding: 8px 8px; border-radius: 9px; }
+.b-row:first-of-type { background: rgba(255, 255, 255, .05); }
+.b-row b { font: 500 12.5px var(--mono); }
+.b-ab { font: 12px var(--mono); color: var(--dim); text-align: right; }
+.b-row small { color: var(--dim); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.b-row em { font-style: normal; font-size: 11.5px; text-align: right; color: var(--dim); }
+.b-pr.open { color: var(--done); }
+.b-pr.review { color: var(--working); }
 
 /* Keys. */
 .keys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 44px; }
@@ -291,7 +322,7 @@ details > p, details > ol, details > div, details > p + p { color: var(--muted);
   .m-panes { grid-template-columns: 1fr; }
   .m-pane:nth-child(2) { display: none; }
   .trio, .promises { grid-template-columns: 1fr; }
-  .sheet, .yours { grid-template-columns: 1fr; gap: 32px; }
+  .sheet, .yours, .ask { grid-template-columns: 1fr; gap: 32px; }
   .sheet img, .servers { max-height: 420px; justify-self: start; }
   .keys { grid-template-columns: 1fr 1fr; }
 }
@@ -309,6 +340,9 @@ details > p, details > ol, details > div, details > p + p { color: var(--muted);
   .sheet { padding: 28px 12px 16px; }
   .dock { display: flex; width: 100%; justify-content: space-between; }
   .keys, .files { grid-template-columns: 1fr; }
+  .ask-term { width: 100%; }
+  .ask-demo { padding-bottom: 0; }
+  .branches { position: relative; width: 100%; margin-top: 14px; }
   .day::before { left: 63px; }
   .day li { grid-template-columns: 48px 1fr; gap: 34px; }
   .day li::before { left: 59px; }

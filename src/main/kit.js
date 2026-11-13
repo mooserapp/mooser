@@ -14,7 +14,8 @@ const os = require("node:os");
 const { execFile } = require("node:child_process");
 
 const HOME = os.homedir();
-const C = path.join(HOME, ".claude");
+// MOOSER_CLAUDE_DIR: another Claude Code folder, for screenshots with example skills and agents.
+const C = process.env.MOOSER_CLAUDE_DIR || path.join(HOME, ".claude");
 const SETTINGS = path.join(C, "settings.json");
 const DIRS = {
   skill: [path.join(C, "skills"), path.join(C, "skills-off")],
@@ -113,7 +114,7 @@ function run(args, timeout = 120000) {
 // `claude mcp list` lines: "<name>: <command or url> - <status>". The user's own servers come
 // from ~/.claude.json; claude.ai connectors and plugin servers are named by their prefix.
 async function mcp() {
-  const user = readJSON(path.join(HOME, ".claude.json"), {}).mcpServers ?? {};
+  const user = readJSON(process.env.MOOSER_CLAUDE_DIR ? path.join(C, ".claude.json") : path.join(HOME, ".claude.json"), {}).mcpServers ?? {};
   const r = await run(["mcp", "list"], 90000);
   const servers = [];
   for (const line of r.stdout.split(/\r?\n/)) {

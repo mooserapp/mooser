@@ -32,6 +32,7 @@
   <symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></symbol>
   <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></symbol>
   <symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4"/><path d="M3.3 19a10 10 0 1 1 17.3 0"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></symbol>
   <symbol id="i-terminal" viewBox="0 0 24 24"><path d="m4 17 6-6-6-6M12 19h8"/></symbol>
   <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></symbol>
 </svg>
@@ -175,14 +176,14 @@
           <h3><span class="es">Tu Claude Code, ordenado</span><span class="en">Your Claude Code, tidy</span></h3>
           <p><span class="es">Los skills, agentes, servidores MCP, plugins y el modelo por defecto de Claude Code, en un panel. Crea y edita tus skills y agentes, enciende o apaga plugins, añade o quita servidores MCP y cambia de modelo sin tocar archivos de configuración.</span><span class="en">Claude Code's skills, agents, MCP servers, plugins and default model, in one panel. Create and edit your skills and agents, turn plugins on or off, add or remove MCP servers and switch models without touching config files.</span></p>
         </div>
-        <img src="img/kit.jpg" width="820" height="1300" loading="lazy" alt="El Kit de IA con la lista de skills de Claude Code">
+        <img class="es" src="img/kit.jpg" width="820" height="1300" loading="lazy" alt="El Kit de IA con la lista de skills de Claude Code"><img class="en" src="img/kit-en.jpg" width="820" height="1300" loading="lazy" alt="The AI kit with the list of Claude Code skills">
       </div>
       <div class="sheet" data-tab="files" hidden>
         <div class="sheet-text">
           <h3><span class="es">Tus archivos, sin salir</span><span class="en">Your files, without leaving</span></h3>
           <p><span class="es">Navega carpetas, abre archivos con su app, abre una carpeta como espacio, y crea, renombra, mueve, copia o envía a la papelera. El color del icono te dice qué tipo de archivo es.</span><span class="en">Browse folders, open files with their app, open a folder as a space, and create, rename, move, copy or trash. The icon's color tells you what kind of file it is.</span></p>
         </div>
-        <img src="img/explorer.jpg" width="820" height="1300" loading="lazy" alt="El Explorador con las carpetas y archivos de un proyecto">
+        <img class="es" src="img/explorer.jpg" width="820" height="1300" loading="lazy" alt="El Explorador con las carpetas y archivos de un proyecto"><img class="en" src="img/explorer-en.jpg" width="820" height="1300" loading="lazy" alt="The Explorer with a project's folders and files">
       </div>
       <div class="sheet" data-tab="servers" hidden>
         <div class="sheet-text">
@@ -205,7 +206,7 @@
           <h3><span class="es">Que no se acabe el plan a mitad de tarea</span><span class="en">Don't run out of plan mid-task</span></h3>
           <p><span class="es">Cuánto llevas de la sesión de 5 horas y de la semana de tu plan de Claude, con una cuenta atrás hasta que se restablece y un aviso opcional cuando vuelves a tener margen.</span><span class="en">How much of your Claude plan's 5-hour session and week you've used, with a countdown to the reset and an optional alert when you have room again.</span></p>
         </div>
-        <img src="img/usage.jpg" width="820" height="1000" loading="lazy" alt="El panel Uso de IA: la sesión de 5 horas al 24 %, cuenta atrás de 04:13:19 y la semana al 40 %">
+        <img class="es" src="img/usage.jpg" width="820" height="1000" loading="lazy" alt="El panel Uso de IA con la sesión de 5 horas, la cuenta atrás hasta que se restablece y la semana"><img class="en" src="img/usage-en.jpg" width="820" height="1000" loading="lazy" alt="The AI usage panel with the 5-hour session, the countdown to the reset and the week">
       </div>
     </div>
   </section>
@@ -224,17 +225,77 @@
   </section>
 
   <!-- ---------- make it yours ---------- -->
-  <section class="block yours" id="tuyo">
-    <div>
-      <h2><span class="es">Hazlo tuyo</span><span class="en">Make it yours</span></h2>
-      <p class="intro"><span class="es">Tema, acento, fondo, cristal, tamaños, fuente y shell de la terminal, avisos y los agentes del botón +. Todo está en la Configuración, y se guarda en archivos normales que también puedes editar a mano.</span><span class="en">Theme, accent, background, glass, sizes, terminal font and shell, alerts and the agents in the + button. It's all in Settings, saved as plain files you can also edit by hand.</span></p>
+  <section class="block" id="tuyo">
+    <h2><span class="es">Hazlo tuyo</span><span class="en">Make it yours</span></h2>
+    <div class="yours">
+      <div>
+        <p class="intro"><span class="es">Tema, acento, fondo, cristal, tamaños, fuente y shell de la terminal, avisos y los agentes del botón +. Todo está en la Configuración, y se guarda en archivos normales que también puedes editar a mano.</span><span class="en">Theme, accent, background, glass, sizes, terminal font and shell, alerts and the agents in the + button. It's all in Settings, saved as plain files you can also edit by hand.</span></p>
 <pre class="tree"><b>~/.mooser/</b>
 ├─ settings.json  <span class="c"><span class="es">tema, terminal, avisos, agentes</span><span class="en">theme, terminal, alerts, agents</span></span>
 ├─ custom.css     <span class="c"><span class="es">tus propios estilos</span><span class="en">your own styles</span></span>
-├─ backgrounds/   <span class="c"><span class="es">imágenes de fondo</span><span class="en">background images</span></span>
-└─ plugins/       <span class="c"><span class="es">comandos y paneles propios</span><span class="en">your own commands and panels</span></span></pre>
+├─ plugins/       <span class="c"><span class="es">funciones nuevas</span><span class="en">new features</span></span>
+└─ AGENTS.md      <span class="c"><span class="es">la guía para tu agente</span><span class="en">the guide for your agent</span></span></pre>
+      </div>
+      <img class="es" src="img/settings.jpg" width="1400" height="933" loading="lazy" alt="La Configuración con los cinco temas: Cáustica, Medianoche, Aurora, Ámbar y Coral"><img class="en" src="img/settings-en.jpg" width="1400" height="933" loading="lazy" alt="Settings with the five themes: Caustic, Midnight, Aurora, Amber and Coral">
     </div>
-    <img src="img/settings.jpg" width="1400" height="995" loading="lazy" alt="La Configuración con los cinco temas: Cáustica, Medianoche, Aurora, Ámbar y Coral">
+
+    <div class="ask">
+      <div class="ask-text">
+        <h3><span class="es">O pídeselo a tu agente</span><span class="en">Or ask your agent</span></h3>
+        <p><span class="es">Mooser se explica a sí mismo: en <code>~/.mooser</code> deja una guía para agentes de código. Abre Claude Code, o cualquier agente que lea <code>AGENTS.md</code>, y pídele otro tema, otro layout, otro ambiente o una función que no existe. Los cambios se ven al guardar, sin cerrar tus terminales.</span><span class="en">Mooser explains itself: in <code>~/.mooser</code> it keeps a guide for coding agents. Open Claude Code, or any agent that reads <code>AGENTS.md</code>, and ask for another theme, another layout, another mood or a feature that doesn't exist yet. Changes show on save, without closing your terminals.</span></p>
+        <ul class="prompts">
+          <li><span class="es">"Hazlo más cálido, con tonos ámbar y esquinas más redondas"</span><span class="en">"Make it warmer, with amber tones and rounder corners"</span></li>
+          <li><span class="es">"Pon la barra de estado arriba y las pestañas más compactas"</span><span class="en">"Move the status bar to the top and make the tabs more compact"</span></li>
+          <li><span class="es">"Avísame cuando un agente lleve 10 minutos trabajando"</span><span class="en">"Tell me when an agent has been working for 10 minutes"</span></li>
+        </ul>
+      </div>
+
+      <figure class="ask-demo" translate="no">
+        <figcaption><span class="es">Ejemplo: un panel con las ramas de GitHub</span><span class="en">Example: a panel with your GitHub branches</span></figcaption>
+        <div class="ask-term">
+          <div class="m-head"><i class="m-dot" style="--s:var(--done)"></i><b>Claude Code</b> <span>~/code/mooser</span></div>
+<pre class="es"><span class="t-dim">›</span> Añade a Mooser un panel con las ramas de
+  GitHub de este proyecto
+
+<span class="t-b">●</span> Read(~/.mooser/AGENTS.md)
+  ⎿  Read 181 lines
+<span class="t-b">●</span> Write(~/.mooser/plugins/ramas/main.js)
+  ⎿  Wrote 54 lines
+<span class="t-b">●</span> Update(~/.mooser/settings.json)
+  ⎿  "plugins": { "ramas": true }
+
+<span class="t-b">●</span> Listo. El panel Ramas ya está en el panel
+  lateral: cada rama con su último commit, lo
+  que lleva por delante y por detrás de main,
+  y su PR si tiene uno.</pre>
+<pre class="en"><span class="t-dim">›</span> Add a panel to Mooser with this project's
+  GitHub branches
+
+<span class="t-b">●</span> Read(~/.mooser/AGENTS.md)
+  ⎿  Read 181 lines
+<span class="t-b">●</span> Write(~/.mooser/plugins/branches/main.js)
+  ⎿  Wrote 54 lines
+<span class="t-b">●</span> Update(~/.mooser/settings.json)
+  ⎿  "plugins": { "branches": true }
+
+<span class="t-b">●</span> Done. The Branches panel is in the side
+  panel: each branch with its last commit,
+  how far ahead of and behind main it is,
+  and its PR if it has one.</pre>
+        </div>
+        <div class="branches">
+          <div class="b-dock">
+            <svg class="i"><use href="#i-sparkles"/></svg><svg class="i"><use href="#i-folder"/></svg><svg class="i"><use href="#i-server"/></svg><svg class="i"><use href="#i-gauge"/></svg>
+            <span class="b-on"><svg class="i"><use href="#i-branch"/></svg><span class="es">Ramas</span><span class="en">Branches</span></span>
+          </div>
+          <div class="b-title">mooser <small><span class="es">4 ramas</span><span class="en">4 branches</span></small></div>
+          <div class="b-row"><b>main</b><span class="b-ab"></span><small><span class="es">Publica la versión 0.1.0</span><span class="en">Release 0.1.0</span></small><em class="b-time">2 h</em></div>
+          <div class="b-row"><b>feature/pagination</b><span class="b-ab">↑3 ↓0</span><small><span class="es">Paginación en /users</span><span class="en">Pagination for /users</span></small><em class="b-pr open">PR #12</em></div>
+          <div class="b-row"><b>fix/login-redirect</b><span class="b-ab">↑1 ↓2</span><small><span class="es">Vuelve a la página de origen</span><span class="en">Return to the original page</span></small><em class="b-pr review"><span class="es">en revisión</span><span class="en">in review</span></em></div>
+          <div class="b-row"><b>docs/readme</b><span class="b-ab">↑0 ↓5</span><small><span class="es">Capturas de macOS</span><span class="en">macOS screenshots</span></small><em class="b-time"><span class="es">sin PR</span><span class="en">no PR</span></em></div>
+        </div>
+      </figure>
+    </div>
   </section>
 
   <!-- ---------- keys ---------- -->
