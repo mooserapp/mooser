@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="es" data-lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mooser</title>
+  <meta name="description" content="Mooser es una app de escritorio para terminales y agentes de IA: espacios por proyecto, pestañas, paneles divididos y el estado de cada agente. Para macOS y Windows.">
+  <meta property="og:title" content="Mooser">
+  <meta property="og:description" content="Terminales y agentes de IA en una ventana tranquila. Para macOS y Windows.">
+  <meta property="og:image" content="img/workspace.jpg">
+  <meta name="theme-color" content="#0b1a30">
+  <link rel="icon" href="img/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+    // Language before first paint: saved choice, else the browser's.
+    (function () {
+      var l = null;
+      try { l = localStorage.getItem("mooser.site.lang"); } catch (e) {}
+      if (l !== "es" && l !== "en") l = /^es\b/i.test(navigator.language || "") ? "es" : "en";
+      document.documentElement.lang = l; document.documentElement.dataset.lang = l;
+    })();
+  </script>
+</head>
+<body>
+
+<header class="nav">
+  <a class="brand" href="#top"><img src="img/icon.png" alt="" width="28" height="28">Mooser</a>
+  <nav class="nav-links">
+    <a href="#funciones"><span class="es">Funciones</span><span class="en">Features</span></a>
+    <a href="#casos"><span class="es">Casos de uso</span><span class="en">Use cases</span></a>
+    <a href="#descargar"><span class="es">Descargar</span><span class="en">Download</span></a>
+  </nav>
+  <button class="lang" type="button" id="lang"><span class="es">English</span><span class="en">Español</span></button>
+  <a class="gh" href="https://github.com/davechbga/mooser" aria-label="GitHub">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+  </a>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-text">
+      <img class="hero-mark" src="img/icon.png" alt="" width="88" height="88">
+      <h1>
+        <span class="es">Todos tus agentes de código, en una ventana tranquila.</span>
+        <span class="en">All your coding agents, in one calm window.</span>
+      </h1>
+      <p class="lede">
+        <span class="es">Mooser es una app de escritorio para terminales y agentes de IA. Cada proyecto es un espacio con sus pestañas y paneles, y Mooser te dice qué agente está trabajando, cuál te necesita y cuál ya terminó.</span>
+        <span class="en">Mooser is a desktop app for terminals and AI agents. Each project is a space with its own tabs and panes, and Mooser tells you which agent is working, which one needs you and which one is done.</span>
+      </p>
+      <div class="cta">
+        <a class="button primary" data-download href="#descargar">
+          <span class="es">Descargar</span><span class="en">Download</span>
+        </a>
+        <a class="button" href="https://github.com/davechbga/mooser">
+          <span class="es">Ver el código</span><span class="en">View the code</span>
+        </a>
+      </div>
+      <p class="fine">
+        <span class="es">Gratis y de código abierto, con licencia MIT. Para macOS (Apple Silicon e Intel) y Windows 10 u 11.</span>
+        <span class="en">Free and open source under the MIT license. For macOS (Apple Silicon and Intel) and Windows 10 or 11.</span>
+      </p>
+    </div>
+    <figure class="hero-shot">
+      <img class="es" src="img/workspace.jpg" width="1800" height="1059" alt="Mooser con una terminal zsh y Claude Code trabajando en paneles divididos, la lista de agentes a la izquierda y el Kit de IA a la derecha">
+      <img class="en" src="img/workspace-en.jpg" width="1800" height="1059" alt="Mooser with a zsh terminal and Claude Code working in split panes, the agent list on the left and the AI kit on the right" loading="lazy">
+    </figure>
+  </section>
+
+  <section class="agents" id="agentes">
+    <div class="agents-text">
+      <h2>
+        <span class="es">Sabes en qué está cada agente sin ir a mirarlo</span>
+        <span class="en">Know what every agent is doing without checking</span>
+      </h2>
+      <p>
+        <span class="es">Mooser reconoce a Claude Code, Codex, Gemini CLI, Aider, OpenCode, Cursor Agent, Copilot CLI, Amp, Goose, Qwen Code y Kiro en cuanto arrancan en una terminal, y los sigue en la barra lateral.</span>
+        <span class="en">Mooser recognizes Claude Code, Codex, Gemini CLI, Aider, OpenCode, Cursor Agent, Copilot CLI, Amp, Goose, Qwen Code and Kiro as soon as they start in a terminal, and follows them in the sidebar.</span>
+      </p>
+      <dl class="states">
+        <div class="state working"><dt><span class="es">Trabajando</span><span class="en">Working</span></dt>
+          <dd><span class="es">Está escribiendo, leyendo archivos o pensando.</span><span class="en">It's writing, reading files or thinking.</span></dd></div>
+        <div class="state blocked"><dt><span class="es">Te necesita</span><span class="en">Needs you</span></dt>
+          <dd><span class="es">Te ha hecho una pregunta. Suena un aviso suave y llega una notificación, aunque estés en otra app.</span><span class="en">It asked you something. A soft chime plays and a notification arrives, even if you're in another app.</span></dd></div>
+        <div class="state done"><dt><span class="es">Terminó</span><span class="en">Done</span></dt>
+          <dd><span class="es">Acabó mientras mirabas otra pestaña. Queda marcado hasta que vuelvas.</span><span class="en">It finished while you were on another tab. It stays marked until you go back.</span></dd></div>
+      </dl>
+    </div>
+
+    <div class="demo" id="demo" aria-label="Ejemplo de la lista de agentes de Mooser" translate="no">
+      <div class="demo-head"><span class="es">Agentes</span><span class="en">Agents</span> <span class="demo-count">3</span></div>
+      <ul class="demo-list">
+        <li data-agent="0"><i></i><div><b>Claude Code</b><small>api <em></em></small></div></li>
+        <li data-agent="1"><i></i><div><b>Codex</b><small>web <em></em></small></div></li>
+        <li data-agent="2"><i></i><div><b>Gemini CLI</b><small>docs <em></em></small></div></li>
+      </ul>
+      <div class="toast" id="toast" role="status">
+        <b><span class="es">Claude Code te necesita</span><span class="en">Claude Code needs you</span></b>
+        <small>api</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="features" id="funciones">
+    <h2><span class="es">Funciones</span><span class="en">Features</span></h2>
+
+    <div class="feature-intro">
+      <h3><span class="es">Un espacio por proyecto</span><span class="en">One space per project</span></h3>
+      <ul class="ticks">
+        <li><span class="es">Cada carpeta de proyecto es un espacio con sus pestañas. Cambias entre ellos con un clic o con ⌘1…9 (Alt+1…9 en Windows).</span><span class="en">Each project folder is a space with its own tabs. Switch with a click or ⌘1…9 (Alt+1…9 on Windows).</span></li>
+        <li><span class="es">Divide cualquier panel a la derecha o hacia abajo, cambia el tamaño arrastrando y amplía uno cuando necesites espacio.</span><span class="en">Split any pane right or down, resize by dragging, and zoom one when you need room.</span></li>
+        <li><span class="es">Al cerrar se guardan tus espacios, pestañas y divisiones. Al volver, cada terminal empieza de nuevo en su carpeta.</span><span class="en">Your spaces, tabs and splits are saved on close. When you come back, each terminal starts again in its folder.</span></li>
+        <li><span class="es">El botón + abre una terminal o arranca directamente el agente que elijas.</span><span class="en">The + button opens a terminal or starts the agent you pick.</span></li>
+        <li><span class="es">Todo se hace también con el teclado, desde la paleta de comandos.</span><span class="en">Everything also works from the keyboard, through the command palette.</span></li>
+      </ul>
+    </div>
+
+    <article class="feature">
+      <div class="feature-text">
+        <h3><span class="es">Uso de tu plan de Claude</span><span class="en">Your Claude plan usage</span></h3>
+        <p><span class="es">Cuánto llevas de la sesión de 5 horas y de la semana, con una cuenta atrás hasta que se restablece y un aviso opcional cuando vuelves a tener margen. También está, resumido, en la barra de estado.</span><span class="en">How much of the 5-hour session and the week you've used, with a countdown to the reset and an optional alert when you have room again. A summary sits in the status bar too.</span></p>
+      </div>
+      <img class="panel" src="img/usage.jpg" width="820" height="1000" loading="lazy" alt="El panel Uso de IA: la sesión de 5 horas al 24 %, una cuenta atrás de 04:13:19 hasta las 14:20 y la semana al 40 %">
+    </article>
+
+    <article class="feature">
+      <div class="feature-text">
+        <h3><span class="es">Kit de IA para Claude Code</span><span class="en">AI kit for Claude Code</span></h3>
+        <p><span class="es">Los skills, agentes, servidores MCP, plugins y el modelo por defecto de Claude Code, en un panel. Crea y edita tus skills y agentes, enciende o apaga plugins, añade o quita servidores MCP y elige el modelo.</span><span class="en">Claude Code's skills, agents, MCP servers, plugins and default model, in one panel. Create and edit your skills and agents, turn plugins on or off, add or remove MCP servers and pick the model.</span></p>
+      </div>
+      <img class="panel" src="img/kit.jpg" width="820" height="1300" loading="lazy" alt="El Kit de IA con la lista de skills de Claude Code y las pestañas de agentes, MCP, plugins y modelo">
+    </article>
+
+    <article class="feature">
+      <div class="feature-text">
+        <h3><span class="es">Explorador</span><span class="en">Explorer</span></h3>
+        <p><span class="es">Navega carpetas, abre archivos, abre una carpeta como espacio, y crea, renombra, mueve, copia o envía a la papelera.</span><span class="en">Browse folders, open files, open a folder as a space, and create, rename, move, copy or trash.</span></p>
+        <h3><span class="es">Servidores SSH</span><span class="en">SSH servers</span></h3>
+        <p><span class="es">Guarda tus servidores en grupos de color y conéctate en una pestaña con la contraseña guardada, cifrada con el Llavero de macOS o DPAPI en Windows. Pasa archivos entre tu equipo y tus servidores, o de un servidor a otro.</span><span class="en">Keep your servers in colored groups and connect in a tab with the saved password, encrypted with the macOS Keychain or DPAPI on Windows. Move files between your computer and your servers, or server to server.</span></p>
+      </div>
+      <img class="panel" src="img/explorer.jpg" width="820" height="1300" loading="lazy" alt="El Explorador con las carpetas y archivos de un proyecto">
+    </article>
+
+    <article class="feature">
+      <div class="feature-text">
+        <h3><span class="es">A tu gusto</span><span class="en">Make it yours</span></h3>
+        <p><span class="es">Cinco temas, color de acento, tu propio fondo, cristal, tamaños, fuente de la terminal y la shell que prefieras. En español o en inglés.</span><span class="en">Five themes, accent color, your own background, glass, sizes, terminal font and the shell you prefer. In English or Spanish.</span></p>
+      </div>
+      <img src="img/settings.jpg" width="1400" height="995" loading="lazy" alt="La Configuración con los cinco temas: Cáustica, Medianoche, Aurora, Ámbar y Coral">
+    </article>
+  </section>
+
+  <section class="cases" id="casos">
+    <h2><span class="es">Casos de uso</span><span class="en">Use cases</span></h2>
+    <div class="case-grid">
+      <article>
+        <h3><span class="es">Varios agentes en el mismo proyecto</span><span class="en">Several agents on one project</span></h3>
+        <p><span class="es">Claude Code rehace la API en un panel, Codex escribe los tests en otro y tú revisas en un tercero. La barra lateral te dice quién trabaja y quién espera una respuesta.</span><span class="en">Claude Code reworks the API in one pane, Codex writes the tests in another and you review in a third. The sidebar tells you who is working and who is waiting for an answer.</span></p>
+      </article>
+      <article>
+        <h3><span class="es">Haz otra cosa mientras trabajan</span><span class="en">Do something else while they work</span></h3>
+        <p><span class="es">Escribe un correo o lee documentación. Cuando un agente te pregunte algo o termine, te enteras por un aviso, sin tener que vigilar la terminal.</span><span class="en">Write an email or read the docs. When an agent asks you something or finishes, an alert tells you, without watching the terminal.</span></p>
+      </article>
+      <article>
+        <h3><span class="es">Varios proyectos sin perderte</span><span class="en">Many projects without getting lost</span></h3>
+        <p><span class="es">Un cliente, otro cliente y tu proyecto personal, cada uno en su espacio con sus pestañas. ⌘1, ⌘2, ⌘3, y mañana todo sigue donde lo dejaste.</span><span class="en">One client, another client and your side project, each in its own space with its tabs. ⌘1, ⌘2, ⌘3, and tomorrow everything is where you left it.</span></p>
+      </article>
+      <article>
+        <h3><span class="es">Que no se acabe el plan a mitad de tarea</span><span class="en">Don't run out of plan mid-task</span></h3>
+        <p><span class="es">Mira cuánto queda de tu sesión de Claude antes de lanzar una tarea larga, y deja que Mooser te avise cuando se restablezca.</span><span class="en">See how much of your Claude session is left before starting a long task, and let Mooser tell you when it resets.</span></p>
+      </article>
+      <article>
+        <h3><span class="es">Servidores sin buscar contraseñas</span><span class="en">Servers without hunting for passwords</span></h3>
+        <p><span class="es">Entra en el servidor de pruebas con un clic, sube un archivo de configuración y cópialo a producción desde la misma ventana.</span><span class="en">Log in to the staging server with a click, upload a config file and copy it to production from the same window.</span></p>
+      </article>
+      <article>
+        <h3><span class="es">Tu Claude Code, ordenado</span><span class="en">Your Claude Code, tidy</span></h3>
+        <p><span class="es">Revisa qué skills y servidores MCP tienes, apaga los plugins que no usas y cambia de modelo sin editar archivos de configuración a mano.</span><span class="en">See which skills and MCP servers you have, turn off the plugins you don't use and switch models without editing config files by hand.</span></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="keys" id="atajos">
+    <h2><span class="es">Atajos de teclado</span><span class="en">Keyboard shortcuts</span></h2>
+    <table>
+      <thead><tr><th scope="col"></th><th scope="col">macOS</th><th scope="col">Windows</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><span class="es">Paleta de comandos</span><span class="en">Command palette</span></th><td><kbd>⌘⇧P</kbd></td><td><kbd>Ctrl+Shift+P</kbd></td></tr>
+        <tr><th scope="row"><span class="es">Nueva pestaña</span><span class="en">New tab</span></th><td><kbd>⌘T</kbd></td><td><kbd>Ctrl+Shift+T</kbd></td></tr>
+        <tr><th scope="row"><span class="es">Dividir a la derecha / hacia abajo</span><span class="en">Split right / down</span></th><td><kbd>⌘D</kbd> <kbd>⌘⇧D</kbd></td><td><kbd>Ctrl+Shift+D</kbd> <kbd>Ctrl+Shift+E</kbd></td></tr>
+        <tr><th scope="row"><span class="es">Ir al espacio 1…9</span><span class="en">Go to space 1…9</span></th><td><kbd>⌘1…9</kbd></td><td><kbd>Alt+1…9</kbd></td></tr>
+        <tr><th scope="row"><span class="es">Moverse entre paneles</span><span class="en">Move between panes</span></th><td><kbd>⌘⌥</kbd> + <span class="es">flechas</span><span class="en">arrows</span></td><td><kbd>Alt</kbd> + <span class="es">flechas</span><span class="en">arrows</span></td></tr>
+        <tr><th scope="row"><span class="es">Panel lateral</span><span class="en">Side panel</span></th><td><kbd>⌘J</kbd></td><td><kbd>Ctrl+Shift+J</kbd></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="privacy" id="privacidad">
+    <h2><span class="es">Tus datos se quedan en tu equipo</span><span class="en">Your data stays on your computer</span></h2>
+    <ul class="ticks">
+      <li><span class="es">Las contraseñas de los servidores se guardan solo cifradas, en el almacén seguro del sistema.</span><span class="en">Server passwords are stored only encrypted, in the system's secure storage.</span></li>
+      <li><span class="es">Para el uso de Claude, Mooser lee la sesión que Claude Code ya guarda y la envía solo a la API de Anthropic. No la guarda ni la renueva.</span><span class="en">For Claude usage, Mooser reads the session Claude Code already keeps and sends it only to Anthropic's API. It never stores or refreshes it.</span></li>
+      <li><span class="es">Sin telemetría: Mooser no envía nada a ningún otro sitio.</span><span class="en">No telemetry: Mooser sends nothing anywhere else.</span></li>
+    </ul>
+  </section>
+
+  <section class="download" id="descargar">
+    <h2><span class="es">Descargar Mooser</span><span class="en">Download Mooser</span></h2>
+    <p class="version" id="version" hidden></p>
+    <div class="dl-rows">
+      <a class="dl" data-asset="mac-arm64.dmg" href="https://github.com/davechbga/mooser/releases/latest">
+        <b><span class="es">macOS con Apple Silicon</span><span class="en">macOS on Apple Silicon</span></b>
+        <span class="chip"><span class="es">M1 y posteriores</span><span class="en">M1 and later</span></span>
+        <small>.dmg</small>
+      </a>
+      <a class="dl" data-asset="mac-x64.dmg" href="https://github.com/davechbga/mooser/releases/latest">
+        <b><span class="es">macOS con Intel</span><span class="en">macOS on Intel</span></b>
+        <span class="chip"><span class="es">Macs anteriores a 2020</span><span class="en">Macs before 2020</span></span>
+        <small>.dmg</small>
+      </a>
+      <a class="dl" data-asset="x64.exe" href="https://github.com/davechbga/mooser/releases/latest">
+        <b>Windows</b>
+        <span class="chip"><span class="es">10 u 11, 64 bits</span><span class="en">10 or 11, 64-bit</span></span>
+        <small>.exe</small>
+      </a>
+    </div>
+
+    <div class="install">
+      <div>
+        <h3><span class="es">Primera vez en macOS</span><span class="en">First launch on macOS</span></h3>
+        <p><span class="es">Arrastra Mooser a Aplicaciones. Como la app aún no está notarizada por Apple, la primera vez macOS dirá que no ha podido verificarla:</span><span class="en">Drag Mooser to Applications. The app isn't notarized by Apple yet, so the first time macOS says it couldn't verify it:</span></p>
+        <ol>
+          <li><span class="es">En ese aviso pulsa <b>Listo</b>, no "Trasladar a la papelera".</span><span class="en">In that dialog, click <b>Done</b>, not "Move to Trash".</span></li>
+          <li><span class="es">Abre <b>Ajustes del Sistema → Privacidad y seguridad</b> y pulsa <b>Abrir igualmente</b> junto a "Se bloqueó el uso de Mooser".</span><span class="en">Open <b>System Settings → Privacy &amp; Security</b> and click <b>Open Anyway</b> next to "Mooser was blocked".</span></li>
+          <li><span class="es">Desde entonces se abre normalmente.</span><span class="en">From then on it opens normally.</span></li>
+        </ol>
+      </div>
+      <div>
+        <h3><span class="es">Primera vez en Windows</span><span class="en">First launch on Windows</span></h3>
+        <p><span class="es">Si SmartScreen avisa, pulsa <b>Más información</b> y luego <b>Ejecutar de todas formas</b>. El instalador te deja elegir idioma y carpeta.</span><span class="en">If SmartScreen warns, click <b>More info</b>, then <b>Run anyway</b>. The installer lets you pick the language and folder.</span></p>
+        <h3><span class="es">Opcional</span><span class="en">Optional</span></h3>
+        <p><span class="es"><a href="https://docs.claude.com/claude-code">Claude Code</a> para el Kit de IA y el Uso de IA. Lo demás funciona sin él.</span><span class="en"><a href="https://docs.claude.com/claude-code">Claude Code</a> for the AI kit and usage. Everything else works without it.</span></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <img src="img/icon.png" alt="" width="24" height="24">
+  <span><span class="es">Mooser, con licencia MIT.</span><span class="en">Mooser, MIT licensed.</span></span>
+  <a href="https://github.com/davechbga/mooser">GitHub</a>
+  <a href="https://github.com/davechbga/mooser/releases"><span class="es">Versiones</span><span class="en">Releases</span></a>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>

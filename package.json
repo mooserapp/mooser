@@ -16,7 +16,9 @@
     "dist:mac": "electron-builder --mac --publish never",
     "release": "electron-builder --publish always",
     "postinstall": "node scripts/fix-pty.cjs",
-    "screenshots": "node scripts/screenshots.cjs"
+    "screenshots": "node scripts/screenshots.cjs",
+    "site": "python3 -m http.server 8080 --directory site",
+    "site:images": "node scripts/site-images.cjs"
   },
   "dependencies": {
     "@xterm/addon-fit": "^0.11.0",

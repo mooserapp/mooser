@@ -33,6 +33,7 @@ hands back the terminal's recent output when the page asks for it again.
 | `src/renderer/js/panels/*.js` | the side panel sections |
 | `src/renderer/js/ui.js` | `h()` element builder, icons, menus, toasts |
 | `src/renderer/styles.css` | the look; variables at the top |
+| `site/` | the website (GitHub Pages, `.github/workflows/pages.yml`); `npm run site` serves it locally, `npm run site:images` refreshes its pictures from the screenshots |
 
 ## Rules
 
