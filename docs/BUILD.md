@@ -99,6 +99,14 @@ Para firmar y notarizar macOS en GitHub, añade estos secretos en **Settings, Se
 
 Mientras el repositorio sea privado, solo quien tenga acceso puede descargar los instaladores de Releases. Al hacerlo público, cualquiera podrá.
 
+## Si las terminales no arrancan en macOS
+
+`posix_spawnp failed` significa que macOS no puede ejecutar `spawn-helper`, el programa de node-pty que lanza cada terminal (node-pty 1.1.0 lo publica sin permiso de ejecución). `npm install`/`npm ci` lo corrigen solos (`scripts/fix-pty.cjs`) y el empaquetado también (`scripts/after-pack.cjs`). Si lo ves, vuelve a instalar las dependencias:
+
+```sh
+rm -rf node_modules && npm ci
+```
+
 ## Iconos
 
 Si cambias `assets/logo.svg`, vuelve a generar los iconos:

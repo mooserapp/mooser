@@ -9,6 +9,18 @@ const os = require("node:os");
 const fs = require("node:fs");
 const path = require("node:path");
 
+// node-pty 1.1.0 ships spawn-helper without the execute bit ("posix_spawnp failed" on macOS and
+// Linux). The install and packaging steps fix it; this is the last resort, for a copy that missed them.
+if (process.platform !== "win32") {
+  try {
+    const base = path.dirname(require.resolve("node-pty/package.json")).replace("app.asar", "app.asar.unpacked");
+    for (const d of ["build/Release", ...fs.readdirSync(path.join(base, "prebuilds")).map((x) => `prebuilds/${x}`)]) {
+      const f = path.join(base, d, "spawn-helper");
+      if (fs.existsSync(f) && !(fs.statSync(f).mode & 0o111)) fs.chmodSync(f, 0o755);
+    }
+  } catch { /* read-only or not there: the packaging step already did it */ }
+}
+
 const AGENTS = {
   claude: "Claude Code", codex: "Codex", gemini: "Gemini CLI", aider: "Aider", opencode: "OpenCode",
   "cursor-agent": "Cursor Agent", copilot: "Copilot CLI", amp: "Amp", goose: "Goose", qwen: "Qwen Code", kiro: "Kiro",
