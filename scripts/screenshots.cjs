@@ -1,6 +1,6 @@
 // Takes the README screenshots on this system: docs/images/<windows|macos>/*.png.
 // Uses a separate data folder and settings folder, so your own Mooser is never touched.
-// Run: npm run screenshots   (close Mooser first)
+// Run: npm run screenshots   (close Mooser first). Only some: npm run screenshots usage settings
 const { spawnSync } = require("node:child_process");
 const fs = require("node:fs");
 const os = require("node:os");
@@ -38,7 +38,8 @@ const SHOTS = [
   { name: "workspace-en", state: DEMO, js: click(".dock button", 0), wait: 9000, settings: { language: "en" } },
 ];
 
-for (const s of SHOTS) {
+const only = process.argv.slice(2);
+for (const s of SHOTS.filter((x) => !only.length || only.includes(x.name))) {
   const tmp = fs.mkdtempSync(path.join(HOME, ".mooser-demo-"));
   const data = path.join(tmp, "data"), home = tmp;
   fs.mkdirSync(data);

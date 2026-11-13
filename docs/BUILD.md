@@ -41,10 +41,10 @@ npm start
 ### 4. Genera los instaladores
 
 ```sh
-npm run dist:mac
+CSC_IDENTITY_AUTO_DISCOVERY=false npm run dist:mac
 ```
 
-Tarda unos minutos. En `dist/` quedan:
+`CSC_IDENTITY_AUTO_DISCOVERY=false` evita que electron-builder firme con el primer certificado que encuentre en tu Llavero (un certificado "Apple Development" no sirve para repartir la app). Sin certificado, `scripts/after-pack.cjs` firma la app *ad hoc*: sin esa firma, un Mac con Apple Silicon diría que "Mooser está dañado". Tarda unos minutos. En `dist/` quedan:
 
 - `Mooser-x.y.z-mac-arm64.dmg`: para Macs con Apple Silicon (M1, M2, M3, M4…).
 - `Mooser-x.y.z-mac-x64.dmg`: para Macs con Intel.
@@ -54,7 +54,7 @@ Tarda unos minutos. En `dist/` quedan:
 
 ### 5. Firma y notarización (opcional, recomendado para publicar)
 
-Sin firmar, macOS avisa al abrir la app y quien la descargue tiene que usar clic derecho, **Abrir**, o `xattr -dr com.apple.quarantine /Applications/Mooser.app`. Para que se abra sin avisos necesitas una cuenta de [Apple Developer](https://developer.apple.com/programs/) (99 USD al año):
+Sin firmar con Developer ID, macOS avisa al abrir la app y quien la descargue tiene que abrirla desde **Ajustes del Sistema, Privacidad y seguridad, Abrir igualmente**, o usar `xattr -dr com.apple.quarantine /Applications/Mooser.app`. Para que se abra sin avisos necesitas una cuenta de [Apple Developer](https://developer.apple.com/programs/) (99 USD al año):
 
 1. En Xcode, en **Settings, Accounts, Manage Certificates**, crea un certificado **Developer ID Application**. Queda en tu Llavero.
 2. Crea una contraseña de app para tu Apple ID en [appleid.apple.com](https://appleid.apple.com), en **Inicio de sesión y seguridad, Contraseñas de app**.

@@ -29,7 +29,7 @@ Mooser is a desktop app for working with several coding agents at once (Claude C
 ## Features
 
 **Workspace**
-- **Spaces**: each project folder is a space; switch with a click or `Alt+1…9`.
+- **Spaces**: each project folder is a space; switch with a click or `Alt+1…9` (`⌘1…9` on a Mac).
 - **Tabs and panes**: split any pane right or down, resize by dragging the three dots, zoom one with a shortcut.
 - **Saved session**: your spaces, tabs and splits are saved; when you come back, each terminal starts again in its folder.
 - **Command palette**: everything from the keyboard (`Ctrl+Shift+P` / `⌘⇧P`).
@@ -73,6 +73,27 @@ Mooser is a desktop app for working with several coding agents at once (Claude C
   </tr>
 </table>
 
+### macOS
+
+<table>
+  <tr>
+    <td><img src="docs/images/macos/workspace-en.png" alt="Spaces, split panes and working agents"></td>
+    <td><img src="docs/images/macos/usage.png" alt="AI usage with the session countdown"></td>
+  </tr>
+  <tr>
+    <td align="center">Spaces, panes and agents with their status</td>
+    <td align="center">Your Claude plan usage</td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/macos/explorer.png" alt="The Explorer"></td>
+    <td><img src="docs/images/macos/settings.png" alt="The Settings window"></td>
+  </tr>
+  <tr>
+    <td align="center">Explorer</td>
+    <td align="center">Settings: themes, terminal, alerts</td>
+  </tr>
+</table>
+
 Screenshots are made with `npm run screenshots` (into `docs/images/<system>/`).
 
 ## Download and install
@@ -86,7 +107,7 @@ Get the installer for your system from **[Releases](../../releases)**:
 | macOS on Intel | `Mooser-x.y.z-mac-x64.dmg` |
 
 - **Windows**: run the installer, pick the language and folder. If SmartScreen warns, choose **More info**, then **Run anyway** (the installer isn't signed yet).
-- **macOS**: open the `.dmg` and drag Mooser to **Applications**. If the app isn't signed, open it the first time with right-click, **Open**. If macOS says it "is damaged", run once in Terminal:
+- **macOS**: open the `.dmg` and drag Mooser to **Applications**. If the app isn't signed, macOS won't open it the first time: go to **System Settings, Privacy & Security** and click **Open Anyway** (on macOS 14 or earlier, right-click and **Open** is enough). If macOS says it "is damaged", run once in Terminal:
   ```sh
   xattr -dr com.apple.quarantine /Applications/Mooser.app
   ```
@@ -115,8 +136,9 @@ Optional: [Claude Code](https://docs.claude.com/claude-code) for the AI kit and 
 | Zoom pane | `Ctrl+Shift+Z` | `⌘⇧Enter` |
 | Side panel | `Ctrl+Shift+J` | `⌘J` |
 | Fold sidebar | `Ctrl+Shift+B` | `⌘B` |
-| Go to space 1…9 | `Alt+1…9` | `⌥1…9` |
-| Move between panes | `Alt+arrows` | `⌥+arrows` |
+| Go to space 1…9 | `Alt+1…9` | `⌘1…9` |
+| Next / previous tab | `Ctrl+Tab` / `Ctrl+Shift+Tab` | `⌘⇧]` / `⌘⇧[` (or `Ctrl+Tab`) |
+| Move between panes | `Alt+arrows` | `⌘⌥+arrows` |
 | Copy / paste | `Ctrl+Shift+C` / `Ctrl+Shift+V` | `⌘C` / `⌘V` |
 
 ## Settings and language

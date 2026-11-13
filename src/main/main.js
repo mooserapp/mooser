@@ -1,7 +1,7 @@
 // Mooser main process: the window, the terminals (node-pty), and the bridges the panels use
 // (files, Claude Code's own configuration, SSH servers, plan usage). Everything the renderer can
 // do goes through the IPC handlers below; the renderer has no Node access.
-const { app, BrowserWindow, ipcMain, dialog, shell, Notification, nativeTheme } = require("electron");
+const { app, BrowserWindow, Menu, ipcMain, dialog, shell, Notification, nativeTheme } = require("electron");
 const path = require("node:path");
 const fs = require("node:fs");
 const os = require("node:os");
@@ -72,6 +72,32 @@ function createWindow() {
   }
 }
 
+// macOS always has a menu bar. Electron's default one adds ⌘W (close window), ⌘R (reload) and
+// ⌘+/⌘- (page zoom), which would take those keys from Mooser's own shortcuts, so it gets a short
+// one: the app, Edit (copy and paste in text fields) and Window.
+function macMenu() {
+  if (!isMac) return;
+  const dev = process.argv.includes("--dev");
+  Menu.setApplicationMenu(Menu.buildFromTemplate([
+    { label: "Mooser", submenu: [
+      { role: "about", label: say("Acerca de Mooser", "About Mooser") }, { type: "separator" },
+      { role: "hide", label: say("Ocultar Mooser", "Hide Mooser") }, { role: "hideOthers", label: say("Ocultar otros", "Hide Others") }, { role: "unhide", label: say("Mostrar todo", "Show All") },
+      { type: "separator" }, { role: "quit", label: say("Salir de Mooser", "Quit Mooser") },
+    ] },
+    { label: say("Edición", "Edit"), submenu: [
+      { role: "undo", label: say("Deshacer", "Undo") }, { role: "redo", label: say("Rehacer", "Redo") }, { type: "separator" },
+      { role: "cut", label: say("Cortar", "Cut") }, { role: "copy", label: say("Copiar", "Copy") }, { role: "paste", label: say("Pegar", "Paste") },
+      { role: "selectAll", label: say("Seleccionar todo", "Select All") },
+    ] },
+    { label: say("Ventana", "Window"), submenu: [
+      { role: "minimize", label: say("Minimizar", "Minimize") }, { role: "zoom", label: say("Zoom", "Zoom") },
+      { role: "togglefullscreen", label: say("Pantalla completa", "Full Screen") },
+      ...(dev ? [{ type: "separator" }, { role: "toggleDevTools", label: "DevTools" }] : []),
+      { type: "separator" }, { role: "front", label: say("Traer todo al frente", "Bring All to Front") },
+    ] },
+  ]));
+}
+
 app.setName("Mooser");
 // One Mooser at a time: opening it again brings the open window forward.
 if (!process.env.MOOSER_SHOT && !app.requestSingleInstanceLock()) app.quit();
@@ -81,9 +107,10 @@ app.whenReady().then(() => {
   nativeTheme.themeSource = "dark";
   config.ensure();
   config.serve();
+  macMenu();
   if (fs.existsSync(path.join(os.homedir(), ".claude"))) { try { installSkill(); } catch { /* not writable */ } }
   terminals.configure(() => config.read().settings);
-  config.watch((changed) => win?.webContents.send("config:changed", changed));
+  config.watch((changed) => { if (changed.includes("settings.json")) macMenu(); win?.webContents.send("config:changed", changed); });
   // npm run dev: saving the app's own page code reloads the window (terminals keep running).
   if (process.argv.includes("--dev")) {
     let t = null;

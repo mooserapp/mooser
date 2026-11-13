@@ -147,7 +147,7 @@ export function focusPane(id, { term = true } = {}) {
   if (term) rt?.term?.focus();
   changed(false);
 }
-// Alt+arrows: the nearest pane in that direction.
+// Alt+arrows (⌘⌥arrows on macOS): the nearest pane in that direction.
 export function moveFocus(dir) {
   const cur = W.panes.get(W.focusedPane)?.el; if (!cur) return;
   const a = cur.getBoundingClientRect(), cx = a.left + a.width / 2, cy = a.top + a.height / 2;
@@ -211,9 +211,11 @@ function makePane(node) {
   // Copy and paste: Ctrl+Shift+C / Ctrl+Shift+V (Cmd+C / Cmd+V on macOS), and copy on select.
   term.attachCustomKeyEventHandler((e) => {
     if (e.type !== "keydown") return true;
-    const mod = W.mac ? e.metaKey : e.ctrlKey && e.shiftKey;
-    if (mod && e.code === "KeyC" && term.hasSelection()) { navigator.clipboard.writeText(term.getSelection()); return false; }
-    if (mod && e.code === "KeyV") { navigator.clipboard.readText().then((t) => t && api.term.write(rt.termId, t)); return false; }
+    const mod = W.mac ? e.metaKey && !e.altKey && !e.ctrlKey : e.ctrlKey && e.shiftKey;
+    // preventDefault keeps macOS's Edit menu from copying or pasting a second time.
+    if (mod && e.code === "KeyC" && term.hasSelection()) { e.preventDefault(); navigator.clipboard.writeText(term.getSelection()); return false; }
+    if (mod && e.code === "KeyV") { e.preventDefault(); navigator.clipboard.readText().then((t) => t && term.paste(t)); return false; }
+    if (W.mac && mod && e.code === "KeyA") { e.preventDefault(); term.selectAll(); return false; }
     if (W.isAppShortcut?.(e)) return false;
     return true;
   });

@@ -122,6 +122,8 @@ grip($("grip-left"), {
 });
 grip($("grip-right"), { get: () => ui.panel, min: () => 300, max: () => Math.min(900, innerWidth - 500), sign: -1, set: (w) => { ui.panel = w; applySizes(); } });
 
+const spaceKeyLabel = (i) => (W.mac ? `⌘${i + 1}` : `Alt+${i + 1}`);
+
 // ---------- sidebar ----------
 const STATUS_COLOR = { working: "var(--working)", blocked: "var(--blocked)", done: "var(--done)", idle: "var(--idle)" };
 function renderSidebar() {
@@ -129,18 +131,18 @@ function renderSidebar() {
   sb.append(h("div.brand",
     h("img", { src: "../../assets/icon.png", alt: "", title: "Mooser" }),
     h("b.grow.wide-only", "Mooser"),
-    iconButton("search", "Comandos (Ctrl+Shift+P)", openPalette, "wide-only"),
+    iconButton("search", W.mac ? "Comandos (⌘⇧P)" : "Comandos (Ctrl+Shift+P)", openPalette, "wide-only"),
     iconButton("sidebar", rail ? "Expandir barra" : "Plegar barra", () => setRail(!rail)),
   ));
   sb.append(h("div.section-head", h("span.grow.wide-only", "Espacios"), iconButton("plus", "Nuevo espacio", () => pickSpace())));
   sb.append(h("div.list", { style: { flex: "1 1 50%" } }, W.spaces.map((s, i) => {
     const st = WS.spaceStatus(s);
     return h(`div.space${s.id === W.active ? ".on" : ""}`, {
-      title: `${WS.label(s)} — ${s.folder}${i < 9 ? ` (Alt+${i + 1})` : ""}`, onclick: () => WS.selectSpace(s.id),
+      title: `${WS.label(s)} — ${s.folder}${i < 9 ? ` (${spaceKeyLabel(i)})` : ""}`, onclick: () => WS.selectSpace(s.id),
       oncontextmenu: (e) => { e.preventDefault(); spaceMenu(s, { x: e.clientX, y: e.clientY }); },
     },
     h("div.tile", { style: { background: s.color } }, WS.label(s).slice(0, 1).toUpperCase()),
-    rail ? null : h("div.grow.col", h("span.trunc", { translate: "no" }, WS.label(s)), h("span.meta.trunc", `${s.tabs.length} ${s.tabs.length === 1 ? "pestaña" : "pestañas"}${i < 9 ? ` · Alt+${i + 1}` : ""}`)),
+    rail ? null : h("div.grow.col", h("span.trunc", { translate: "no" }, WS.label(s)), h("span.meta.trunc", `${s.tabs.length} ${s.tabs.length === 1 ? "pestaña" : "pestañas"}${i < 9 ? ` · ${spaceKeyLabel(i)}` : ""}`)),
     st && st !== "idle" ? h(`span.dot.${st}`) : null);
   })));
   const list = WS.agents();
@@ -151,7 +153,7 @@ function renderSidebar() {
         : [h(`span.dot.${a.status}`), h("div.grow.col", h("span.trunc", a.agent), h("span.sub.trunc", h("span", { translate: "no" }, WS.label(a.space)), " · ", h("span", { style: { color: STATUS_COLOR[a.status] } }, STATUS_WORD[a.status])))]))
       : rail ? [] : [h("div.dim", { style: { padding: "4px 10px", fontSize: "12px" } }, "Abre Claude Code, Codex o Gemini en una pestaña y aparecerá aquí con su estado.")]));
   sb.append(h("div.foot",
-    h("div.foot-row", { title: "Configuración (Ctrl+,)", onclick: () => openSettings(ctx) }, icon("cpu", 14), rail ? null : "Configuración")));
+    h("div.foot-row", { title: W.mac ? "Configuración (⌘,)" : "Configuración (Ctrl+,)", onclick: () => openSettings(ctx) }, icon("cpu", 14), rail ? null : "Configuración")));
 }
 
 function spaceMenu(s, at) {
@@ -297,8 +299,8 @@ function openPalette() {
 }
 function showKeys() {
   const rows = commands().filter((c) => c.key).concat([
-    { label: "Ir al espacio 1…9", key: "Alt+1…9" }, { label: "Pestaña siguiente / anterior", key: "Ctrl+Tab / Ctrl+Shift+Tab" },
-    { label: "Moverse entre paneles", key: "Alt+flechas" }, { label: "Copiar / pegar en la terminal", key: W.mac ? "⌘C / ⌘V" : "Ctrl+Shift+C / V" },
+    { label: "Ir al espacio 1…9", key: W.mac ? "⌘1…9" : "Alt+1…9" }, { label: "Pestaña siguiente / anterior", key: W.mac ? "⌘⇧] / ⌘⇧[" : "Ctrl+Tab / Ctrl+Shift+Tab" },
+    { label: "Moverse entre paneles", key: W.mac ? "⌘⌥flechas" : "Alt+flechas" }, { label: "Copiar / pegar en la terminal", key: W.mac ? "⌘C / ⌘V" : "Ctrl+Shift+C / V" },
   ]);
   const ov = h("div.overlay", { onmousedown: (e) => { if (e.target === ov) ov.remove(); } },
     h("div.modal", h("div.palette", h("div.opts", h("div", { style: { padding: "8px 10px", fontWeight: 600 } }, "Atajos de teclado"),
@@ -319,12 +321,15 @@ function zoom(step) { const size = Math.max(9, Math.min(28, (set().terminal?.fon
 // Ctrl+Shift+<key> on Windows (plain Ctrl stays the terminal's), ⌘ on macOS.
 function shortcut(e) {
   const k = e.code;
-  if (e.altKey && !e.ctrlKey && !e.metaKey) {
-    if (/^Digit[1-9]$/.test(k)) { const s = W.spaces[Number(k.slice(5)) - 1]; if (s) { WS.selectSpace(s.id); return true; } }
-    const dir = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down" }[e.key];
-    if (dir) { WS.moveFocus(dir); return true; }
-    return false;
-  }
+  // Spaces and panes: Alt+1…9 and Alt+arrows; on macOS ⌘1…9 and ⌘⌥arrows, so Option stays the
+  // terminal's (⌥← / ⌥→ move by word).
+  const spaceKey = W.mac ? e.metaKey && !e.altKey && !e.ctrlKey && !e.shiftKey : e.altKey && !e.ctrlKey && !e.metaKey;
+  const paneKey = W.mac ? e.metaKey && e.altKey && !e.ctrlKey : e.altKey && !e.ctrlKey && !e.metaKey;
+  if (spaceKey && /^Digit[1-9]$/.test(k)) { const s = W.spaces[Number(k.slice(5)) - 1]; if (s) WS.selectSpace(s.id); return true; }
+  const dir = paneKey && { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down" }[e.key];
+  if (dir) { WS.moveFocus(dir); return true; }
+  if (!W.mac && e.altKey && !e.ctrlKey && !e.metaKey) return false;
+  if (W.mac && e.metaKey && e.shiftKey && (k === "BracketLeft" || k === "BracketRight")) { WS.cycleTab(k === "BracketLeft" ? -1 : 1); return true; }
   if (e.ctrlKey && e.key === "Tab") { WS.cycleTab(e.shiftKey ? -1 : 1); return true; }
   if ((W.mac ? e.metaKey : e.ctrlKey) && !e.shiftKey && k === "Comma") { openSettings(ctx); return true; }
   const mod = W.mac ? e.metaKey : e.ctrlKey && e.shiftKey;

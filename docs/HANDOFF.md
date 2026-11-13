@@ -30,18 +30,27 @@ Hecho y comprobado en Windows con capturas:
 - Carpeta `~/.mooser` (settings.json, custom.css, plugins) aplicada en vivo; las terminales sobreviven a una recarga de la ventana.
 - Instalador de Windows (`npm run dist:win`), en español e inglés.
 
+Hecho y comprobado en macOS (MacBook Apple Silicon, con capturas):
+- Terminales con zsh, en `npm run dev` y en la app empaquetada desde el `.dmg`.
+- Detección de agentes, avisos dentro de la ventana y uso de Claude leído del Llavero.
+- Capturas en `docs/images/macos/` y sección "macOS" en los dos README.
+- Menú propio de macOS (Mooser, Edición, Ventana). El de Electron por defecto se quedaba ⌘W, ⌘R y ⌘+/−.
+- Atajos de Mac: ⌘1…9 (espacios), ⌘⌥flechas (paneles) y ⌘⇧[ / ] (pestañas). ⌥ queda libre para la terminal (⌥←/→ saltan de palabra).
+- ⌘C/⌘V/⌘A en la terminal con `preventDefault`, para que el menú Edición no pegue dos veces. Pegar usa `term.paste` (bracketed paste).
+- `dist:mac` sin firmar: `scripts/after-pack.cjs` firma la app ad hoc. Sin esa firma, macOS diría "Mooser está dañado".
+
 Sin comprobar todavía:
-- **macOS en general**: terminales con zsh, botones de ventana (semáforo), atajos con ⌘, notificaciones, Llavero para las contraseñas SSH, uso de Claude leído del Llavero.
-- **Servidores SSH contra un servidor real** (conexión con contraseña guardada y transferencia de archivos).
+- **Teclado real en macOS**: osascript no tiene permiso de Accesibilidad en este equipo, así que los atajos nuevos (⌘1, ⌘⌥←, ⌘⇧], ⌘V y ⌘W en la terminal) están revisados en el código pero no se han pulsado.
+- **Semáforo** (no sale en las capturas, que son solo de la página) y **notificaciones del sistema**.
+- **Servidores SSH contra un servidor real** (conexión con contraseña guardada en el Llavero y transferencia de archivos).
 - **Botones del Kit de IA que usan la CLI de Claude**: encender, apagar, actualizar y desinstalar plugins; añadir y quitar MCP.
 - **El flujo de GitHub Actions** (`.github/workflows/release.yml`).
+- **Firma y notarización**: en este Mac solo hay un certificado "Apple Development"; para notarizar hace falta "Developer ID Application" (ver `docs/BUILD.md`).
 
 ## Pendiente
 
-1. **Probar la app en el Mac** (`npm run dev`) y arreglar lo que falle, en especial lo de la lista anterior.
-2. **Capturas de macOS**: `npm run screenshots` crea `docs/images/macos/*.png`. Añade en `README.md` y en `README.en.md` una sección "macOS" en "Capturas" / "Screenshots", igual que la de Windows.
-3. **Instalador de macOS**: `CSC_IDENTITY_AUTO_DISCOVERY=false npm run dist:mac` (sin firmar) o con las variables de Apple (firmado y notarizado; ver `docs/BUILD.md`). Prueba el `.dmg`.
-4. **Publicar la versión 0.1.0**: en GitHub ya existe un **borrador de Release `v0.1.0`** con el instalador de Windows. Añade los de macOS y publícalo:
+1. Probar a mano en el Mac lo de la lista anterior.
+2. **Publicar la versión 0.1.0**: en GitHub ya existe un **borrador de Release `v0.1.0`** con el instalador de Windows. Los de macOS (sin firmar) se crean con `CSC_IDENTITY_AUTO_DISCOVERY=false npm run dist:mac`. Para subirlos y publicar:
    ```sh
    gh release upload v0.1.0 dist/*.dmg dist/*.zip --clobber
    gh release edit v0.1.0 --draft=false
@@ -59,4 +68,4 @@ Sin comprobar todavía:
 
 ## Dónde está cada cosa
 
-Ver la tabla de `AGENTS.md`. Para revisar cambios de interfaz sin tocarla a mano: `npm run screenshots`, o `MOOSER_SHOT=<archivo.png> MOOSER_QUIT=1 npx electron .` (con `MOOSER_JS="..."` para hacer clics antes de la captura y `MOOSER_USER_DATA` / `MOOSER_HOME` para usar carpetas de prueba).
+Ver la tabla de `AGENTS.md`. Para revisar cambios de interfaz sin tocarla a mano: `npm run screenshots` (o solo algunas: `npm run screenshots usage settings`), o `MOOSER_SHOT=<archivo.png> MOOSER_QUIT=1 npx electron .` (con `MOOSER_JS="..."` para hacer clics antes de la captura y `MOOSER_USER_DATA` / `MOOSER_HOME` para usar carpetas de prueba).

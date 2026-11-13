@@ -45,7 +45,7 @@ Mooser es una app de escritorio para trabajar con varios agentes de código a la
 ## Funciones
 
 **Espacio de trabajo**
-- **Espacios**: cada carpeta de proyecto es un espacio. Cambias entre ellos con un clic o con `Alt+1…9`.
+- **Espacios**: cada carpeta de proyecto es un espacio. Cambias entre ellos con un clic o con `Alt+1…9` (`⌘1…9` en Mac).
 - **Pestañas y paneles**: divide cualquier panel a la derecha o hacia abajo, cambia el tamaño arrastrando los tres puntos y amplía uno con un atajo.
 - **Sesión guardada**: al cerrar se guardan tus espacios, pestañas y divisiones; al volver, cada terminal empieza de nuevo en su carpeta.
 - **Paleta de comandos**: todo con el teclado (`Ctrl+Shift+P` / `⌘⇧P`).
@@ -97,6 +97,35 @@ Mooser es una app de escritorio para trabajar con varios agentes de código a la
   </tr>
 </table>
 
+### macOS
+
+<table>
+  <tr>
+    <td><img src="docs/images/macos/workspace.png" alt="Espacios, paneles divididos y agentes trabajando"></td>
+    <td><img src="docs/images/macos/usage.png" alt="Uso de IA con la cuenta atrás de la sesión"></td>
+  </tr>
+  <tr>
+    <td align="center">Espacios, paneles y agentes con su estado</td>
+    <td align="center">Uso de tu plan de Claude</td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/macos/explorer.png" alt="El Explorador"></td>
+    <td><img src="docs/images/macos/settings.png" alt="La ventana de Configuración"></td>
+  </tr>
+  <tr>
+    <td align="center">Explorador</td>
+    <td align="center">Configuración: temas, terminal, avisos</td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/macos/welcome.png" alt="La bienvenida"></td>
+    <td><img src="docs/images/macos/workspace-en.png" alt="Mooser en inglés"></td>
+  </tr>
+  <tr>
+    <td align="center">Bienvenida</td>
+    <td align="center">En inglés</td>
+  </tr>
+</table>
+
 Las capturas se generan con `npm run screenshots` (en `docs/images/<sistema>/`).
 
 ## Descargar e instalar
@@ -112,7 +141,7 @@ Descarga el de tu sistema en la página de **[Releases](../../releases)**:
 | macOS con Intel | `Mooser-x.y.z-mac-x64.dmg` |
 
 - **Windows**: abre el instalador, elige el idioma y la carpeta, y listo. Si Windows SmartScreen avisa, pulsa **Más información** y luego **Ejecutar de todas formas** (el instalador aún no está firmado).
-- **macOS**: abre el `.dmg` y arrastra Mooser a **Aplicaciones**. Si la app no está firmada, la primera vez ábrela con clic derecho y **Abrir**. Si macOS dice que "está dañada", ejecuta una vez en la Terminal:
+- **macOS**: abre el `.dmg` y arrastra Mooser a **Aplicaciones**. Si la app no está firmada, la primera vez macOS no la deja abrir: ve a **Ajustes del Sistema, Privacidad y seguridad** y pulsa **Abrir igualmente** (en macOS 14 o anterior basta con clic derecho y **Abrir**). Si macOS dice que "está dañada", ejecuta una vez en la Terminal:
   ```sh
   xattr -dr com.apple.quarantine /Applications/Mooser.app
   ```
@@ -159,9 +188,9 @@ npm start
 | Ampliar panel | `Ctrl+Shift+Z` | `⌘⇧Enter` |
 | Panel lateral | `Ctrl+Shift+J` | `⌘J` |
 | Plegar barra lateral | `Ctrl+Shift+B` | `⌘B` |
-| Ir al espacio 1…9 | `Alt+1…9` | `⌥1…9` |
-| Pestaña siguiente / anterior | `Ctrl+Tab` / `Ctrl+Shift+Tab` | igual |
-| Moverse entre paneles | `Alt+flechas` | `⌥+flechas` |
+| Ir al espacio 1…9 | `Alt+1…9` | `⌘1…9` |
+| Pestaña siguiente / anterior | `Ctrl+Tab` / `Ctrl+Shift+Tab` | `⌘⇧]` / `⌘⇧[` (o `Ctrl+Tab`) |
+| Moverse entre paneles | `Alt+flechas` | `⌘⌥+flechas` |
 | Copiar / pegar | `Ctrl+Shift+C` / `Ctrl+Shift+V` | `⌘C` / `⌘V` |
 | Texto más grande / pequeño | `Ctrl+=` / `Ctrl+-` | `⌘+` / `⌘-` |
 
@@ -216,7 +245,7 @@ Cada instalador se genera en su propio sistema, o en GitHub para los dos a la ve
 ```sh
 npm ci
 npm run dist:win   # en Windows → dist/Mooser-Setup-x.y.z-x64.exe
-npm run dist:mac   # en un Mac  → dist/Mooser-x.y.z-mac-arm64.dmg y …-x64.dmg
+CSC_IDENTITY_AUTO_DISCOVERY=false npm run dist:mac   # en un Mac  → dist/Mooser-x.y.z-mac-arm64.dmg y …-x64.dmg
 ```
 
 O publica una versión desde GitHub: `git tag v0.2.0 && git push --tags` construye los instaladores de Windows y macOS y los adjunta a un borrador de Release.
