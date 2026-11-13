@@ -17,7 +17,7 @@
 <p align="center"><a href="README.md">Leer en español</a></p>
 
 <p align="center">
-  <img src="docs/images/screenshot.png" alt="Mooser with two terminals, a working agent and Claude usage" width="900">
+  <img src="docs/images/windows/workspace-en.png" alt="Mooser with two terminals, a working agent and Claude usage" width="900">
 </p>
 
 ---
@@ -49,6 +49,31 @@ Mooser is a desktop app for working with several coding agents at once (Claude C
 **Make it yours**
 - Five themes (Caustic, Midnight, Aurora, Amber and Coral), accent color, your own background, glass, sizes and animations.
 - English and Spanish.
+
+## Screenshots
+
+### Windows
+
+<table>
+  <tr>
+    <td><img src="docs/images/windows/workspace-en.png" alt="Spaces, split panes and working agents"></td>
+    <td><img src="docs/images/windows/usage.png" alt="AI usage with the session countdown"></td>
+  </tr>
+  <tr>
+    <td align="center">Spaces, panes and agents with their status</td>
+    <td align="center">Your Claude plan usage</td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/windows/explorer.png" alt="The Explorer"></td>
+    <td><img src="docs/images/windows/settings.png" alt="The Settings window"></td>
+  </tr>
+  <tr>
+    <td align="center">Explorer</td>
+    <td align="center">Settings: themes, terminal, alerts</td>
+  </tr>
+</table>
+
+Screenshots are made with `npm run screenshots` (into `docs/images/<system>/`).
 
 ## Download and install
 

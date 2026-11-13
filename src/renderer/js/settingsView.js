@@ -18,7 +18,7 @@ export function openSettings(ctx, at = section) {
   document.querySelector(".settings-overlay")?.remove();
   const nav = h("nav.settings-nav"), body = h("div.settings-body");
   const ov = h("div.overlay.settings-overlay", { onmousedown: (e) => { if (e.target === ov) close(); } },
-    h("div.modal.settings", h("div.row.settings-head", icon("cpu"), h("b.grow", "Configuración"), h("span.dim.trunc", { style: { fontSize: "11.5px" } }, Settings.S.dir + "/settings.json"), h("button.icon-btn", { title: "Cerrar", onclick: () => close() }, icon("x"))),
+    h("div.modal.settings", h("div.row.settings-head", icon("cpu"), h("b.grow", "Configuración"), h("span.dim.trunc", { translate: "no", style: { fontSize: "11.5px" } }, Settings.S.dir.replace(ctx.W.home, "~").replace(/\\/g, "/") + "/settings.json"), h("button.icon-btn", { title: "Cerrar", onclick: () => close() }, icon("x"))),
       h("div.settings-main", nav, body)));
   const close = () => { off(); ov.remove(); removeEventListener("keydown", esc); };
   const esc = (e) => { if (e.key === "Escape") close(); };

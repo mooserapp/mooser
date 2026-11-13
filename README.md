@@ -17,7 +17,7 @@
 <p align="center"><a href="README.en.md">Read in English</a></p>
 
 <p align="center">
-  <img src="docs/images/screenshot.png" alt="Mooser con dos terminales, un agente trabajando y el uso de Claude" width="900">
+  <img src="docs/images/windows/workspace.png" alt="Mooser con dos terminales, un agente trabajando y el uso de Claude" width="900">
 </p>
 
 ---
@@ -26,6 +26,7 @@
 
 - [Qué es](#qué-es)
 - [Funciones](#funciones)
+- [Capturas](#capturas)
 - [Descargar e instalar](#descargar-e-instalar)
 - [Primeros pasos](#primeros-pasos)
 - [Atajos de teclado](#atajos-de-teclado)
@@ -65,9 +66,38 @@ Mooser es una app de escritorio para trabajar con varios agentes de código a la
 - Cinco temas (Cáustica, Medianoche, Aurora, Ámbar y Coral), color de acento, fondo propio, cristal, tamaños y animaciones.
 - Español e inglés.
 
-<p align="center">
-  <img src="docs/images/settings.png" alt="La ventana de Configuración" width="760">
-</p>
+## Capturas
+
+### Windows
+
+<table>
+  <tr>
+    <td><img src="docs/images/windows/workspace.png" alt="Espacios, paneles divididos y agentes trabajando"></td>
+    <td><img src="docs/images/windows/usage.png" alt="Uso de IA con la cuenta atrás de la sesión"></td>
+  </tr>
+  <tr>
+    <td align="center">Espacios, paneles y agentes con su estado</td>
+    <td align="center">Uso de tu plan de Claude</td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/windows/explorer.png" alt="El Explorador"></td>
+    <td><img src="docs/images/windows/settings.png" alt="La ventana de Configuración"></td>
+  </tr>
+  <tr>
+    <td align="center">Explorador</td>
+    <td align="center">Configuración: temas, terminal, avisos</td>
+  </tr>
+  <tr>
+    <td><img src="docs/images/windows/welcome.png" alt="La bienvenida"></td>
+    <td><img src="docs/images/windows/workspace-en.png" alt="Mooser en inglés"></td>
+  </tr>
+  <tr>
+    <td align="center">Bienvenida</td>
+    <td align="center">En inglés</td>
+  </tr>
+</table>
+
+Las capturas se generan con `npm run screenshots` (en `docs/images/<sistema>/`).
 
 ## Descargar e instalar
 

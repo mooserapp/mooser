@@ -15,6 +15,8 @@ const store = require("./store");
 const config = require("./config");
 
 config.registerScheme();
+// MOOSER_USER_DATA: a separate data folder (window state, saved workspace), for screenshots and tests.
+if (process.env.MOOSER_USER_DATA) app.setPath("userData", process.env.MOOSER_USER_DATA);
 
 const isMac = process.platform === "darwin";
 // The few texts the main process shows itself (system dialogs), in the chosen language.
